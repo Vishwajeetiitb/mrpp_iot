@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on Sunday 24 May 2020 03:08:12 PM IST by Eclipse SUMO netedit Version 1.6.0
+<!-- generated on 2022-08-10 20:05:21 by Eclipse SUMO netedit Version 1.14.1
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="udupi_manipal.net.xml"/>
+        <sumo-net-file value="/home/vishwajeet/ddp_workspace/src/mrpp_sumo/graph_sumo/udupi_manipal.net.xml"/>
     </input>
 
     <output>
-        <output-file value="udupi_manipal.net.xml"/>
-        <plain-output-prefix value="/home/sdeepakmallya/osm_to_sumo/udupi_manipal"/>
+        <output-file value="/home/vishwajeet/ddp_workspace/src/mrpp_sumo/graph_sumo/udupi_manipal.net.xml"/>
     </output>
 
     <processing>
@@ -30,14 +29,10 @@
         <walkingareas value="false"/>
     </pedestrian>
 
-    <report>
-        <aggregate-warnings value="5"/>
-    </report>
-
 </configuration>
 -->
 
-<types version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/types_file.xsd">
+<types version="1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/types_file.xsd">
     <type id="highway.bridleway" priority="1" numLanes="1" speed="2.78" allow="pedestrian" oneway="1" width="2.00"/>
     <type id="highway.bus_guideway" priority="1" numLanes="1" speed="27.78" allow="bus" oneway="1"/>
     <type id="highway.cycleway" priority="1" numLanes="1" speed="8.33" allow="bicycle" oneway="0" width="1.00"/>

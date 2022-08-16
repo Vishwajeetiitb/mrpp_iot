@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on Sun 03 Jan 2021 15:38:01 IST by Eclipse SUMO netedit Version 1.8.0
+<!-- generated on 2022-08-14 15:40:51 by Eclipse SUMO netedit Version 1.14.1
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="/home/sdeepakmallya/ros_ws/src/mrpp_sumo/graph_sumo/iitb_full.net.xml"/>
+        <sumo-net-file value="/home/vishwajeet/ddp_workspace/src/mrpp_sumo/graph_sumo/iitb_full.net.xml"/>
     </input>
 
     <output>
-        <output-file value="/home/sdeepakmallya/ros_ws/src/mrpp_sumo/graph_sumo/iitb_full.net.xml"/>
-        <plain-output-prefix value="/home/sdeepakmallya/ros_ws/src/mrpp_sumo/graph_sumo/iitb_full"/>
+        <output-file value="/home/vishwajeet/ddp_workspace/src/mrpp_sumo/graph_sumo/iitb_full.net.xml"/>
     </output>
 
     <processing>
@@ -30,14 +29,10 @@
         <walkingareas value="false"/>
     </pedestrian>
 
-    <report>
-        <aggregate-warnings value="5"/>
-    </report>
-
 </configuration>
 -->
 
-<connections version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/connections_file.xsd">
+<connections version="1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/connections_file.xsd">
     <connection from="-366913701#10" to="-699526248#2" fromLane="0" toLane="0"/>
     <connection from="-366913701#10" to="-366913701#9" fromLane="0" toLane="0"/>
     <connection from="-366913701#10" to="366913701#10" fromLane="0" toLane="0"/>
@@ -994,13 +989,16 @@
 
     <connection from="gneE0" to="-622415786#1" fromLane="0" toLane="0"/>
     <connection from="gneE0" to="622415784" fromLane="0" toLane="0"/>
+    <connection from="gneE0" to="gneE1" fromLane="0" toLane="0"/>
 
     <connection from="gneE1" to="366913701#2" fromLane="0" toLane="0"/>
     <connection from="gneE1" to="gneE2" fromLane="0" toLane="0"/>
+    <connection from="gneE1" to="gneE0" fromLane="0" toLane="0"/>
 
     <connection from="gneE2" to="gneE3" fromLane="0" toLane="0"/>
 
     <connection from="gneE3" to="gneE0" fromLane="0" toLane="0"/>
     <connection from="gneE3" to="366913701#2" fromLane="0" toLane="0"/>
+    <connection from="gneE3" to="gneE2" fromLane="0" toLane="0"/>
 
 </connections>

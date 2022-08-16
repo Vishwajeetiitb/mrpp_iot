@@ -49,7 +49,7 @@ class CR:
                     self.network_arr['node_{}'.format(i)][n][cars] = 0
         rospy.Service('algo_ready', AlgoReady, self.callback_ready)
         self.ready = True       
-        
+         
     def callback_idle(self, data):
         # print(self.network_arr["node_0"][self.dead_nodes[0]])
         temp = 0

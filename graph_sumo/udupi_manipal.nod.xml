@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on Sunday 24 May 2020 03:08:12 PM IST by Eclipse SUMO netedit Version 1.6.0
+<!-- generated on 2022-08-10 20:05:21 by Eclipse SUMO netedit Version 1.14.1
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="udupi_manipal.net.xml"/>
+        <sumo-net-file value="/home/vishwajeet/ddp_workspace/src/mrpp_sumo/graph_sumo/udupi_manipal.net.xml"/>
     </input>
 
     <output>
-        <output-file value="udupi_manipal.net.xml"/>
-        <plain-output-prefix value="/home/sdeepakmallya/osm_to_sumo/udupi_manipal"/>
+        <output-file value="/home/vishwajeet/ddp_workspace/src/mrpp_sumo/graph_sumo/udupi_manipal.net.xml"/>
     </output>
 
     <processing>
@@ -30,15 +29,11 @@
         <walkingareas value="false"/>
     </pedestrian>
 
-    <report>
-        <aggregate-warnings value="5"/>
-    </report>
-
 </configuration>
 -->
 
-<nodes version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
-    <location netOffset="-468729.73,-1419820.20" convBoundary="0.00,0.00,18111.38,60348.49" origBoundary="74.711232,12.843380,74.891943,13.389001" projParameter="+proj=utm +zone=43 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"/>
+<nodes version="1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
+    <location netOffset="-468729.73,-1419820.20" convBoundary="0.00,0.00,15681.73,60348.49" origBoundary="74.711232,12.843380,74.891943,13.389001" projParameter="+proj=utm +zone=43 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"/>
 
     <node id="1369614871" x="8788.98" y="55735.32" type="priority"/>
     <node id="1369615162" x="8675.74" y="56356.56" type="priority"/>
@@ -420,7 +415,6 @@
     <node id="1632344173" x="4434.19" y="54609.19" type="priority"/>
     <node id="1632344403" x="7366.74" y="50501.27" type="priority"/>
     <node id="1632433761" x="0.00" y="55891.39" type="priority"/>
-    <node id="1701964221" x="18111.38" y="57726.20" type="priority"/>
     <node id="1706781891" x="6615.00" y="52588.46" type="priority"/>
     <node id="1706781928" x="7210.86" y="51969.96" type="priority"/>
     <node id="1706781981" x="8481.81" y="54462.23" type="priority"/>
@@ -719,27 +713,16 @@
     <node id="1969452927" x="8024.38" y="56370.51" type="priority"/>
     <node id="1969452931" x="8300.78" y="56292.79" type="priority"/>
     <node id="1969452939" x="8049.42" y="56517.75" type="priority"/>
-    <node id="1969485186" x="9039.60" y="55148.48" type="priority"/>
     <node id="1969485195" x="9291.78" y="55556.53" type="priority"/>
     <node id="1969485223" x="9086.42" y="55558.99" type="priority"/>
-    <node id="1969485227" x="9084.86" y="55169.49" type="priority"/>
     <node id="1969485235" x="8936.95" y="55538.99" type="priority"/>
     <node id="1969485291" x="9179.78" y="55538.14" type="priority"/>
     <node id="1969485294" x="9146.29" y="55439.75" type="priority"/>
     <node id="1969485298" x="9222.97" y="55437.97" type="priority"/>
-    <node id="1969485305" x="9072.38" y="55136.31" type="priority"/>
-    <node id="1969485317" x="9052.08" y="55181.67" type="priority"/>
-    <node id="1969485319" x="9017.92" y="55310.38" type="dead_end"/>
-    <node id="1969485384" x="8962.73" y="55116.81" type="priority"/>
-    <node id="1969485457" x="8997.23" y="55103.08" type="priority"/>
-    <node id="1969485458" x="8913.80" y="55373.78" type="dead_end"/>
-    <node id="1969485500" x="9010.32" y="55135.55" type="priority"/>
-    <node id="1969485523" x="8975.82" y="55149.28" type="priority"/>
     <node id="1969485529" x="9069.86" y="55560.45" type="priority"/>
     <node id="1969502318" x="8820.11" y="56037.71" type="priority"/>
     <node id="1969502326" x="8318.76" y="55697.94" type="priority"/>
     <node id="1969502336" x="8944.59" y="55112.03" type="priority"/>
-    <node id="1969502565" x="8824.96" y="56199.93" type="priority"/>
     <node id="1969594468" x="8254.73" y="56877.43" type="priority"/>
     <node id="1969594484" x="8161.92" y="56935.27" type="priority"/>
     <node id="1969594538" x="8297.65" y="56904.36" type="priority"/>
@@ -1013,10 +996,8 @@
     <node id="3662071938" x="8787.34" y="55551.15" type="priority"/>
     <node id="3684809725" x="8821.05" y="56212.21" type="priority"/>
     <node id="3684809727" x="8907.61" y="56235.90" type="priority"/>
-    <node id="3714299056" x="9062.23" y="55158.99" type="right_before_left"/>
     <node id="3714765164" x="3664.85" y="54673.92" type="priority"/>
     <node id="3714765165" x="3612.63" y="54666.49" type="priority"/>
-    <node id="3733742968" x="8986.53" y="55126.18" type="right_before_left"/>
     <node id="3779253139" x="7901.57" y="55723.41" type="priority"/>
     <node id="3779253143" x="7892.99" y="55729.41" type="priority"/>
     <node id="3779253155" x="7898.74" y="55737.93" type="priority"/>
@@ -1085,8 +1066,6 @@
     <node id="6531422826" x="7516.44" y="57716.98" type="priority"/>
     <node id="6634736723" x="6306.14" y="57935.47" type="priority"/>
     <node id="6634736724" x="6278.80" y="57888.62" type="priority"/>
-    <node id="6634771346" x="8217.92" y="55017.20" type="dead_end"/>
-    <node id="6634771353" x="7811.19" y="55092.79" type="dead_end"/>
     <node id="6634771366" x="8269.01" y="55541.66" type="right_before_left"/>
     <node id="6634771371" x="8252.62" y="55463.59" type="priority"/>
     <node id="6635281030" x="8055.46" y="56659.78" type="priority"/>
@@ -1123,7 +1102,6 @@
     <node id="6673290461" x="9623.67" y="54429.01" type="priority"/>
     <node id="6673290463" x="9666.73" y="54454.18" type="priority"/>
     <node id="6673298886" x="8997.01" y="54810.94" type="priority"/>
-    <node id="6673501599" x="8070.93" y="54958.09" type="dead_end"/>
     <node id="6673501606" x="7794.69" y="55093.17" type="priority"/>
     <node id="6673501634" x="8247.36" y="54583.84" type="priority"/>
     <node id="6673501636" x="8350.34" y="54589.43" type="priority"/>

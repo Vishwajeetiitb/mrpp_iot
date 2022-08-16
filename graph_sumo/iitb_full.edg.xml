@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on Sun 03 Jan 2021 15:38:01 IST by Eclipse SUMO netedit Version 1.8.0
+<!-- generated on 2022-08-14 15:40:51 by Eclipse SUMO netedit Version 1.14.1
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="/home/sdeepakmallya/ros_ws/src/mrpp_sumo/graph_sumo/iitb_full.net.xml"/>
+        <sumo-net-file value="/home/vishwajeet/ddp_workspace/src/mrpp_sumo/graph_sumo/iitb_full.net.xml"/>
     </input>
 
     <output>
-        <output-file value="/home/sdeepakmallya/ros_ws/src/mrpp_sumo/graph_sumo/iitb_full.net.xml"/>
-        <plain-output-prefix value="/home/sdeepakmallya/ros_ws/src/mrpp_sumo/graph_sumo/iitb_full"/>
+        <output-file value="/home/vishwajeet/ddp_workspace/src/mrpp_sumo/graph_sumo/iitb_full.net.xml"/>
     </output>
 
     <processing>
@@ -30,14 +29,10 @@
         <walkingareas value="false"/>
     </pedestrian>
 
-    <report>
-        <aggregate-warnings value="5"/>
-    </report>
-
 </configuration>
 -->
 
-<edges version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/edges_file.xsd">
+<edges version="1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/edges_file.xsd">
     <edge id="-366913701#10" from="5077600694" to="6568909595" priority="4" type="highway.unclassified" numLanes="1" speed="8.33" shape="915.93,952.21 934.60,934.54 951.69,886.85 953.00,864.75" disallow="tram rail_urban rail rail_electric rail_fast ship"/>
     <edge id="-366913701#11" from="668672700" to="5077600694" priority="4" type="highway.unclassified" numLanes="1" speed="8.33" shape="788.03,1012.18 896.63,970.44 915.93,952.21" disallow="tram rail_urban rail rail_electric rail_fast ship"/>
     <edge id="-366913701#12" from="6583550562" to="668672700" priority="4" type="highway.unclassified" numLanes="1" speed="8.33" disallow="tram rail_urban rail rail_electric rail_fast ship"/>

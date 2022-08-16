@@ -103,8 +103,12 @@ def main():
     file_path1 = dirname + '/outputs/{}_visits.in'.format(file_name)
     g = nx.read_graphml(dirname + '/graph_ml/' + graph_name + '.graphml')
     s = Sumo_Wrapper(g, file_path, file_path1)
-    sumo_startup = ['sumo', '-c', dirname + '/graph_sumo/{}.sumocfg'.format(graph_name), '--fcd-output', dirname + '/outputs/{}_vehicle.xml'.format(file_name)]
-    # sumo_startup = ['sumo-gui', '-c', dirname + '/graph_sumo/{}.sumocfg'.format(graph_name)]
+    gui_status = rospy.get_param('/gui')
+    if gui_status :
+        sumo_startup = ['sumo-gui', '-c', dirname + '/graph_sumo/{}.sumocfg'.format(graph_name)]
+    else:
+        sumo_startup = ['sumo', '-c', dirname + '/graph_sumo/{}.sumocfg'.format(graph_name), '--fcd-output', dirname + '/outputs/{}_vehicle.xml'.format(file_name)]
+
     traci.start(sumo_startup)
 
     init_bots = int(rospy.get_param('/init_bots'))

@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
         multiplicity = 1
 
-        algo_name = 'without_intent_cr'
+        algo_name = 'mrpp_iot'
         vel = 10.
         # prior_nodes = rn.sample(graph.nodes(), num_priority)
         # prior_nodes = ['0', '4', '20', '24']

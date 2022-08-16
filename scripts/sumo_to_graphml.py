@@ -7,7 +7,7 @@ import xml.etree.ElementTree as et
 import networkx as nx
 import math
 
-def graph_wrapper(graph_name ='grid_5_5'):
+def graph_wrapper(graph_name ='iitb_full'):
     
     dir_name = rospkg.RosPack().get_path('mrpp_sumo')
     sumo_folder = dir_name + '/graph_sumo'
