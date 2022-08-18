@@ -11,11 +11,11 @@ import urllib.parse
 
 graph_name = 'iitb_full'
 no_agents_list = [1,3,5,7,9]
-algo_list = ['mrpp_iot_250','mrpp_iot_350','mrpp_iot_500']
+algo_list = ['mrpp_iot3_packet_loss_250','mrpp_iot3_packet_loss_350','mrpp_iot3_packet_loss_500']
 steady_time_stamp = 3000
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 available_comparisons = ['avg_idleness', 'worst_idleness']
-comparison_parameter_index = 0
+comparison_parameter_index = 1
 
 
 # fig = go.Figure(layout=go.Layout(
@@ -63,7 +63,7 @@ if comparison_parameter_index ==0:
     if not os.path.exists(plot_dir):
         os.makedirs(plot_dir)
     fig.write_html(plot_dir+file_name)
-    print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/avg_node_idle/' + urllib.parse.quote(file_name))
+    print("http://vishwajeetiitb.github.io/mrpp_iot/scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/avg_node_idle/' + urllib.parse.quote(file_name))
 
 elif comparison_parameter_index ==1:
     fig = px.box(df, x="Agents", y="Worst Idleness", color="Algorithm")
@@ -71,6 +71,6 @@ elif comparison_parameter_index ==1:
     if not os.path.exists(plot_dir):
         os.makedirs(plot_dir)
     fig.write_html(plot_dir+file_name)
-    print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/wrost_node_idle/' + urllib.parse.quote(file_name))
+    print("http://vishwajeetiitb.github.io/mrpp_iot/scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/wrost_node_idle/' + urllib.parse.quote(file_name))
 
 # fig.show()
