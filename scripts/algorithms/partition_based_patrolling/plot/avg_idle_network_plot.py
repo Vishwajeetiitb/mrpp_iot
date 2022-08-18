@@ -13,9 +13,8 @@ graph_name = 'iitb_full'
 algo_name = 'mrpp_iot_250'
 no_agents = 1
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
-no_of_base_stations = np.load(dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/required_no_of_base_stations.npy')[0]
-graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/' + str(no_of_base_stations) + '_base_stations/'
-
+# no_of_base_stations = np.load(dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/required_no_of_base_stations.npy')[0]
+graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
 
 G = nx.read_graphml(dirname + '/graph_ml/' + graph_name + '.graphml')
 tree = ET.parse(dirname + '/graph_sumo/' + graph_name +".net.xml")
@@ -86,31 +85,6 @@ node_trace.marker.color = avg_idle
 node_trace.text = node_text
 
 
-## Base stations 
-base_stations_df = pd.read_csv(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations.csv',converters={'location': pd.eval,'Radius': pd.eval})
-base_station_logo = Image.open(dirname + '/scripts/algorithms/partition_based_patrolling/plot/base.png')
-
-base_stations = []
-icons = []
-for idx, base_station in base_stations_df.iterrows():
-    radius = base_station['Radius']
-    location = base_station['location']
-    base_stations.append(dict(type="circle",
-    xref="x", yref="y",
-    fillcolor="rgba(1,1,1,0.1)",
-    x0=location[0]-radius, y0=location[1]-radius, x1=location[0]+radius, y1=location[1]+radius,
-    line_color="LightSeaGreen",line_width = 0
-                    ))
-
-    icons.append(dict(
-            source=base_station_logo,
-            xref="x",
-            yref="y",
-            x=location[0]-radius/10,
-            y=location[1]+radius/10,
-            sizex = radius/5,
-            sizey = radius/5
-        ))
 
 
 
@@ -130,6 +104,37 @@ fig = go.Figure(data=[edge_trace, node_trace],
                 #     x=0.005, y=-0.002 ) ],
                 yaxis=dict(scaleanchor="x", scaleratio=1))
                 )
-if algo_name == 'mrpp_iot': fig.update_layout(shapes=base_stations, images=icons)
+
+## Base stations 
+
+if 'mrpp_iot' in algo_name:
+    range = int(algo_name.split('_')[-1])
+    base_stations_df = pd.read_csv(graph_results_path + graph_name + '/' + str(range) + '_range_base_stations.csv',converters={'location': pd.eval,'Radius': pd.eval})
+    base_station_logo = Image.open(dirname + '/scripts/algorithms/partition_based_patrolling/plot/base.png')
+
+    base_stations = []
+    icons = []
+    for idx, base_station in base_stations_df.iterrows():
+        radius = base_station['Radius']
+        location = base_station['location']
+        base_stations.append(dict(type="circle",
+        xref="x", yref="y",
+        fillcolor="rgba(1,1,1,0.1)",
+        x0=location[0]-radius, y0=location[1]-radius, x1=location[0]+radius, y1=location[1]+radius,
+        line_color="LightSeaGreen",line_width = 0
+                        ))
+
+        icons.append(dict(
+                source=base_station_logo,
+                xref="x",
+                yref="y",
+                x=location[0]-radius/10,
+                y=location[1]+radius/10,
+                sizex = radius/5,
+                sizey = radius/5
+            ))
+
+    fig.update_layout(shapes=base_stations, images=icons)
+
 fig.show()
 fig.write_html(dirname + '/scripts/algorithms/partition_based_patrolling/plot/'+ graph_name +"_"+  ".html")

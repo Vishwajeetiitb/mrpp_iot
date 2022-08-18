@@ -6,8 +6,8 @@ import rospkg
 import glob
 import rospy
 import os
-no_of_bots = [1]
-algos = ['mrpp_iot2']
+no_of_bots = [7,9]
+algos = ['mrpp_iot2_packet_loss']
 graphs = ['iitb_full']
 
 dir_name = rospkg.RosPack().get_path('mrpp_sumo')
@@ -17,7 +17,7 @@ for graph_name in graphs:
         for no_agents in no_of_bots:
             os.system("xterm -e roscore & sleep 3")
             rospy.set_param('/use_sim_time',True)
-            rospy.set_param('/gui',True)
+            rospy.set_param('/gui',False)
             rospy.set_param('/graph',graph_name)
             rospy.set_param('/init_bots',no_agents)
             rospy.set_param('/init_locations','')
@@ -32,3 +32,5 @@ for graph_name in graphs:
             os.system("xterm -e rosrun mrpp_sumo command_center.py")
             os.system("sleep 10")
             os.system("killall xterm & sleep 3")
+
+

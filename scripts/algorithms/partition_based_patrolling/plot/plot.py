@@ -2,7 +2,6 @@
 import plotly.express as px
 import numpy as np
 import sys
-import rospy
 import rospkg
 
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
@@ -10,7 +9,7 @@ no_agents = int(sys.argv[1])
 # which_node = sys.argv[2]
 which_node = 'a'
 graph_name = 'iitb_full'
-algo_name = 'mrpp_iot2_250'
+algo_name = 'mrpp_iot_new_250'
 df = px.data.gapminder().query("country=='Canada'")
 
 

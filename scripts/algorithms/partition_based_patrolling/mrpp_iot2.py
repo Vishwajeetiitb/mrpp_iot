@@ -109,7 +109,7 @@ class MRPP_IOT2:
                     
                 if vals.size:
                     option_nodes.extend(nodes[np.where(vals==np.max(vals))[0]])
-        print(option_nodes)
+                    
         next_walk = [node, rn.sample(option_nodes,1)[0]]
 
         next_departs = [t]

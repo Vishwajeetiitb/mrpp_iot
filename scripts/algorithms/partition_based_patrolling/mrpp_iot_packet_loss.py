@@ -33,7 +33,7 @@ class MRPP_IOT:
         self.graph = graph
         self.stamp = 0.
         self.nodes = list(self.graph.nodes())
-        self.Iot_device_range = 250
+        self.Iot_device_range = 500
         self.graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
         self.base_stations_df = pd.read_csv(self.graph_results_path + graph_name + '/' + str(self.Iot_device_range) + '_range_base_stations.csv',converters={'location': pd.eval,'Radius': pd.eval})
         

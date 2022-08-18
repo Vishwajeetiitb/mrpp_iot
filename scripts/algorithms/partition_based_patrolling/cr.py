@@ -76,6 +76,8 @@ class CR:
         bot = req.name
         
         self.robots[bot][node] = 0.
+        node_index = self.nodes.index(node)
+        self.global_idle[node_index] = 0
 
         neigh = list(self.graph.successors(node))
         idles = []
