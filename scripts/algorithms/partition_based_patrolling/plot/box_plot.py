@@ -11,11 +11,11 @@ import urllib.parse
 
 graph_name = 'iitb_full'
 no_agents_list = [1,3,5,7,9]
-algo_list = ['mrpp_iot_packet_loss_500','mrpp_iot2_packet_loss_500','mrpp_iot3_packet_loss_500','cr']
+algo_list = ['mrpp_iot_250','mrpp_iot_350','mrpp_iot_500']
 steady_time_stamp = 3000
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 available_comparisons = ['avg_idleness', 'worst_idleness']
-comparison_parameter_index = 1
+comparison_parameter_index = 0
 
 
 # fig = go.Figure(layout=go.Layout(

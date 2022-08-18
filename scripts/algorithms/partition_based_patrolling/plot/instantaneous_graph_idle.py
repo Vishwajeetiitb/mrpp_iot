@@ -12,6 +12,8 @@ import urllib.parse
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 no_agents_list = [1,3,5,7]
 algo_list = ['mrpp_iot_500','mrpp_iot2_500','mrpp_iot3_500','cr']
+row_size = 2
+col_size = 2
 graph_name = 'iitb_full'
 algo_name = 'mrpp_iot2_250'
 color_list = [
@@ -27,7 +29,7 @@ color_list = [
     '#17becf'   # blue-teal
 ]
 
-fig = make_subplots(rows=2, cols=2,subplot_titles=[str(i)+ " Agents" for i in no_agents_list])
+fig = make_subplots(rows=row_size, cols=col_size,subplot_titles=[str(i)+ " Agents" for i in no_agents_list])
 
 
 for idx,no_agents in enumerate(no_agents_list):
@@ -37,7 +39,7 @@ for idx,no_agents in enumerate(no_agents_list):
         idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data.npy")
         stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps.npy")
         graph_idle = np.average(idle,axis=1)
-        fig.add_trace(go.Scatter(x=stamps, y=graph_idle,mode='lines',marker=dict(color=color_list[m]),legendgroup=m+1,name=algo_name,showlegend=(True if idx==0 else False)),row=int(idx/2)+1,col=idx%2+1)
+        fig.add_trace(go.Scatter(x=stamps, y=graph_idle,mode='lines',marker=dict(color=color_list[m]),legendgroup=m+1,name=algo_name,showlegend=(True if idx==0 else False)),row=int(idx/row_size)+1,col=idx%row_size+1)
     
 
     fig['layout']['xaxis'+str(idx+1)]['title']='Stamps'
