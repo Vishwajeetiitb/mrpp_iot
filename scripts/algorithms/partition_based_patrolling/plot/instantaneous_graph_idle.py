@@ -6,11 +6,12 @@ import numpy as np
 import rospkg
 import pandas as pd
 import os
-
+from slugify import slugify
+import urllib.parse
 
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 no_agents_list = [1,3,5,7]
-algo_list = ['mrpp_iot_packet_loss_250','mrpp_iot2_packet_loss_250','mrpp_iot3_packet_loss_250','cr']
+algo_list = ['mrpp_iot_500','mrpp_iot2_500','mrpp_iot3_500','cr']
 graph_name = 'iitb_full'
 algo_name = 'mrpp_iot2_250'
 color_list = [
@@ -43,7 +44,7 @@ for idx,no_agents in enumerate(no_agents_list):
     fig['layout']['yaxis'+str(idx+1)]['title']='Instantaneous Graph Idleness'
 
 fig.update_layout(title='Instantaneous Graph Idleness Plot',title_x=0.5)
-fig.show()
+# fig.show()
 
 
 file_name = ""
@@ -60,5 +61,8 @@ if not os.path.exists(plot_dir):
     os.makedirs(plot_dir)
 
 fig.write_html(plot_dir+file_name)
+
+print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/instantaneous_graph_idle/' + urllib.parse.quote(file_name))
+
 
 

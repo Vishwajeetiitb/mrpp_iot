@@ -5,6 +5,9 @@ import rospkg
 import numpy as np
 import pandas as pd
 import os 
+from slugify import slugify
+import urllib.parse
+
 
 graph_name = 'iitb_full'
 no_agents_list = [1,3,5,7,9]
@@ -60,12 +63,14 @@ if comparison_parameter_index ==0:
     if not os.path.exists(plot_dir):
         os.makedirs(plot_dir)
     fig.write_html(plot_dir+file_name)
+    print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/avg_node_idle/' + urllib.parse.quote(file_name))
+
 elif comparison_parameter_index ==1:
     fig = px.box(df, x="Agents", y="Worst Idleness", color="Algorithm")
     plot_dir = dirname + '/scripts/algorithms/partition_based_patrolling/plot/'+ graph_name + '/wrost_node_idle/'
     if not os.path.exists(plot_dir):
         os.makedirs(plot_dir)
     fig.write_html(plot_dir+file_name)
-    fig.write_html(dirname + '/scripts/algorithms/partition_based_patrolling/plot/'+ graph_name +"_box_plot_worst_idleness.html")
+    print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/wrost_node_idle/' + urllib.parse.quote(file_name))
 
 # fig.show()
