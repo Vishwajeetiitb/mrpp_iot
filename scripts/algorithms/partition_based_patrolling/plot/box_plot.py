@@ -4,14 +4,16 @@ import plotly.graph_objects as go
 import rospkg
 import numpy as np
 import pandas as pd
+import os 
 
 graph_name = 'iitb_full'
 no_agents_list = [1,3,5,7,9]
-algo_list = ['mrpp_iot_500','mrpp_iot2_500','mrpp_iot3_500','cr']
+algo_list = ['mrpp_iot_packet_loss_500','mrpp_iot2_packet_loss_500','mrpp_iot3_packet_loss_500','cr']
 steady_time_stamp = 3000
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 available_comparisons = ['avg_idleness', 'worst_idleness']
-comparison_parameter_index = 0
+comparison_parameter_index = 1
+
 
 # fig = go.Figure(layout=go.Layout(
 #                 title=graph_name +' Average node Idleness distribution',
@@ -39,11 +41,31 @@ for no_agents in no_agents_list:
             df = pd.concat([df,pd.DataFrame(idle_dic,index=[0])])
 
 # fig.update_traces(quartilemethod="exclusive") # or "inclusive", or "linear" by default
+
+
+
+file_name = ""
+for idx,algo in enumerate(algo_list):
+    if not idx:
+        file_name = algo
+    else:
+        file_name = file_name + " | " + algo
+        
+file_name = file_name + ".html"
+
+
 if comparison_parameter_index ==0:
     fig = px.box(df, x="Agents", y="Average Idleness", color="Algorithm")
-    fig.write_html(dirname + '/scripts/algorithms/partition_based_patrolling/plot/'+ graph_name +"_box_plot_avg_idleness.html")
+    plot_dir = dirname + '/scripts/algorithms/partition_based_patrolling/plot/'+ graph_name + '/avg_node_idle/'
+    if not os.path.exists(plot_dir):
+        os.makedirs(plot_dir)
+    fig.write_html(plot_dir+file_name)
 elif comparison_parameter_index ==1:
     fig = px.box(df, x="Agents", y="Worst Idleness", color="Algorithm")
+    plot_dir = dirname + '/scripts/algorithms/partition_based_patrolling/plot/'+ graph_name + '/wrost_node_idle/'
+    if not os.path.exists(plot_dir):
+        os.makedirs(plot_dir)
+    fig.write_html(plot_dir+file_name)
     fig.write_html(dirname + '/scripts/algorithms/partition_based_patrolling/plot/'+ graph_name +"_box_plot_worst_idleness.html")
 
-fig.show()
+# fig.show()

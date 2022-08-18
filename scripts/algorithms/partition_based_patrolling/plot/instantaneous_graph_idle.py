@@ -5,11 +5,12 @@ import plotly.graph_objects as go
 import numpy as np
 import rospkg
 import pandas as pd
+import os
 
 
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 no_agents_list = [1,3,5,7]
-algo_list = ['mrpp_iot_250','mrpp_iot_350','mrpp_iot_500']
+algo_list = ['mrpp_iot_packet_loss_250','mrpp_iot2_packet_loss_250','mrpp_iot3_packet_loss_250','cr']
 graph_name = 'iitb_full'
 algo_name = 'mrpp_iot2_250'
 color_list = [
@@ -44,6 +45,20 @@ for idx,no_agents in enumerate(no_agents_list):
 fig.update_layout(title='Instantaneous Graph Idleness Plot',title_x=0.5)
 fig.show()
 
-fig.write_html(dirname + '/scripts/algorithms/partition_based_patrolling/plot/'+ graph_name +"Instantaneous_idleness.html")
+
+file_name = ""
+for idx,algo in enumerate(algo_list):
+    if not idx:
+        file_name = algo
+    else:
+        file_name = file_name + " | " + algo
+        
+file_name = file_name + ".html"
+plot_dir = dirname + '/scripts/algorithms/partition_based_patrolling/plot/'+ graph_name + '/instantaneous_graph_idle/'
+
+if not os.path.exists(plot_dir):
+    os.makedirs(plot_dir)
+
+fig.write_html(plot_dir+file_name)
 
 
