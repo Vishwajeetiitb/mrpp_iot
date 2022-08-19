@@ -14,10 +14,10 @@ import urllib.parse
 
 
 graph_name = 'iitb_full'
-algo_list = ['mrpp_iot_packet_loss_250','mrpp_iot_packet_loss_350','mrpp_iot_packet_loss_500']
+algo_list = ['mrpp_iot_packet_loss_500','mrpp_iot2_packet_loss_500','mrpp_iot3_packet_loss_500','cr']
 row_size = 1
-col_size = 3
-no_agents = 1
+col_size = 4
+no_agents = 5
 steady_time_stamp = 3000
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
@@ -78,7 +78,7 @@ node_trace = go.Scatter(
             xanchor='left',
             titleside='right'
         ),
-        line_width=2))
+        line_width=1))
 
 def get_base_station_shape(algo):
     range = int(algo.split('_')[-1])
@@ -205,4 +205,4 @@ if not os.path.exists(plot_dir):
 fig.write_html(plot_dir+file_name)
 
 print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/network_plot/' + urllib.parse.quote(file_name))
-fig.show()
+# fig.show()
