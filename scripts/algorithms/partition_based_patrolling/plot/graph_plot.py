@@ -145,4 +145,4 @@ fig.write_html(plot_dir+file_name)
 print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/instantaneous_graph_idle/' + urllib.parse.quote(file_name))
 
 
-fig.show()
+# fig.show()
