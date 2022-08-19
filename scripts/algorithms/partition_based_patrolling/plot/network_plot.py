@@ -1,6 +1,6 @@
 from turtle import width
+from typing import Dict
 import plotly.graph_objects as go
-import rospy
 import rospkg
 import networkx as nx
 import xml.etree.ElementTree as ET
@@ -8,18 +8,25 @@ from ast import literal_eval
 import pandas as pd
 import numpy as np
 from PIL import Image
+from plotly.subplots import make_subplots
+import os
+import urllib.parse
+
 
 graph_name = 'iitb_full'
-algo_name = 'mrpp_iot_250'
+algo_list = ['mrpp_iot_packet_loss_250','mrpp_iot_packet_loss_350','mrpp_iot_packet_loss_500']
+row_size = 1
+col_size = 3
 no_agents = 1
+steady_time_stamp = 3000
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
-# no_of_base_stations = np.load(dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/required_no_of_base_stations.npy')[0]
 graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
 
+
+################################################################# Graph Configuration ###############################################################################
 G = nx.read_graphml(dirname + '/graph_ml/' + graph_name + '.graphml')
 tree = ET.parse(dirname + '/graph_sumo/' + graph_name +".net.xml")
 root = tree.getroot()
-
 
 ## Edges of the graph
 edge_x = []
@@ -52,14 +59,17 @@ node_trace = go.Scatter(
     x=node_x, y=node_y,
     mode='markers',
     hoverinfo='text',
+    
     marker=dict(
-        showscale=True,
+        showscale=False,
+    
         # colorscale options
         #'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
         #'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
         #'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
         colorscale='Jet',
         reversescale=True,
+        coloraxis = "coloraxis",
         color=[],
         size=6,
         colorbar=dict(
@@ -70,59 +80,24 @@ node_trace = go.Scatter(
         ),
         line_width=2))
 
-## Idlness colour scheme 
-idle = np.load(dirname+ "/post_process/"  + graph_name+ "/" + algo_name + "/"+ str(no_agents)+ "_agents/data.npy")
-stamps = np.load(dirname+ "/post_process/" + graph_name+ "/" + algo_name + "/"+ str(no_agents)+ "_agents/stamps.npy")
-
-steady_time_stamp = 3000
-idle = idle[np.argwhere(stamps>steady_time_stamp)[0][0]:]  # Taking idlness values after steady state
-avg_idle = np.average(idle,axis=0)
-node_text = []
-for idx, node in enumerate(G.nodes()):
-    node_text.append('Avg Idleness: '+str(avg_idle[idx]))
-
-node_trace.marker.color = avg_idle
-node_trace.text = node_text
-
-
-
-
-
-## Plot all data
-
-fig = go.Figure(data=[edge_trace, node_trace],
-             layout=go.Layout(
-                title=graph_name +' Avg node Idleness (post steady state)  with '+ str(no_agents) +' Agents',
-                titlefont_size=16,
-                showlegend=False,
-                hovermode='closest',
-                margin=dict(b=20,l=5,r=5,t=40),
-                # annotations=[ dict(
-                #     text="Python code: <a href='https://plotly.com/ipython-notebooks/network-graphs/'> https://plotly.com/ipython-notebooks/network-graphs/</a>",
-                #     showarrow=False,
-                #     xref="paper", yref="paper",
-                #     x=0.005, y=-0.002 ) ],
-                yaxis=dict(scaleanchor="x", scaleratio=1))
-                )
-
-## Base stations 
-
-if 'mrpp_iot' in algo_name:
-    range = int(algo_name.split('_')[-1])
+def get_base_station_shape(algo):
+    range = int(algo.split('_')[-1])
     base_stations_df = pd.read_csv(graph_results_path + graph_name + '/' + str(range) + '_range_base_stations.csv',converters={'location': pd.eval,'Radius': pd.eval})
     base_station_logo = Image.open(dirname + '/scripts/algorithms/partition_based_patrolling/plot/base.png')
-
     base_stations = []
     icons = []
     for idx, base_station in base_stations_df.iterrows():
         radius = base_station['Radius']
         location = base_station['location']
         base_stations.append(dict(type="circle",
-        xref="x", yref="y",
-        fillcolor="rgba(1,1,1,0.1)",
-        x0=location[0]-radius, y0=location[1]-radius, x1=location[0]+radius, y1=location[1]+radius,
-        line_color="LightSeaGreen",line_width = 0
-                        ))
+                                    xref="x",
+                                    yref="y",
+                                    fillcolor="rgba(1,1,1,0.1)",
+                                    x0=location[0]-radius,
+                                    y0=location[1]-radius,
+                                    x1=location[0]+radius,
+                                    y1=location[1]+radius,
+                                    line_color="LightSeaGreen",line_width = 0))
 
         icons.append(dict(
                 source=base_station_logo,
@@ -133,8 +108,101 @@ if 'mrpp_iot' in algo_name:
                 sizex = radius/5,
                 sizey = radius/5
             ))
+    return base_stations,icons
 
-    fig.update_layout(shapes=base_stations, images=icons)
+###################################################################### Subplots ####################################################################################
 
+fig = make_subplots(rows=row_size, cols=col_size,subplot_titles=[i for i in algo_list])
+
+for m,algo_name in enumerate(algo_list):
+    idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data.npy")
+    stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps.npy")
+    idle = idle[np.argwhere(stamps>steady_time_stamp)[0][0]:]  # Taking idlness values after steady state
+    avg_idle = np.average(idle,axis=0)
+    node_text = []
+    for idx, node in enumerate(G.nodes()):
+        node_text.append('Avg Idleness: '+str(avg_idle[idx]))
+
+    node_trace.marker.color = avg_idle
+    node_trace.text = node_text
+    
+
+    node_trace.showlegend = False
+    edge_trace.showlegend = False
+    fig.add_trace(edge_trace,row=int(m/col_size)+1,col=m%col_size+1)
+    fig.add_trace(node_trace,row=int(m/col_size)+1,col=m%col_size+1)
+
+    if 'mrpp_iot' in algo_name:
+        base_station_shape,icons = get_base_station_shape(algo_name)
+        for shape,img in zip(base_station_shape,icons):
+            fig.add_shape(shape,row=int(m/col_size)+1,col=m%col_size+1)
+            fig.add_layout_image(img,row=int(m/col_size)+1,col=m%col_size+1)
+
+
+    
+    
+fig.update_layout(title='Average Node Idleness Network Plot',
+                titlefont_size=16,
+                title_x=0.5,
+                coloraxis = {'colorscale':'Jet'},
+                )
+fig.update_yaxes(scaleanchor = "x",scaleratio = 1)
+
+
+
+
+
+
+
+
+## Plot all data
+
+# fig = go.Figure(data=[edge_trace, node_trace],
+#              layout=go.Layout(
+#                 title=graph_name +' Avg node Idleness (post steady state)  with '+ str(no_agents) +' Agents',
+#                 titlefont_size=16,
+#                 showlegend=False,
+#                 hovermode='closest',
+#                 margin=dict(b=20,l=5,r=5,t=40),
+#                 # annotations=[ dict(
+#                 #     text="Python code: <a href='https://plotly.com/ipython-notebooks/network-graphs/'> https://plotly.com/ipython-notebooks/network-graphs/</a>",
+#                 #     showarrow=False,
+#                 #     xref="paper", yref="paper",
+#                 #     x=0.005, y=-0.002 ) ],
+#                 yaxis=dict(scaleanchor="x", scaleratio=1))
+#                 )
+
+## Base stations 
+
+
+    
+
+#     fig.update_layout(shapes=base_stations, images=icons)
+
+
+
+
+
+
+
+
+
+
+
+file_name = ""
+for idx,algo in enumerate(algo_list):
+    if not idx:
+        file_name = algo
+    else:
+        file_name = file_name + " | " + algo
+        
+file_name = file_name + ".html"
+plot_dir = dirname + '/scripts/algorithms/partition_based_patrolling/plot/'+ graph_name + '/network_plot/'
+
+if not os.path.exists(plot_dir):
+    os.makedirs(plot_dir)
+
+fig.write_html(plot_dir+file_name)
+
+print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/network_plot/' + urllib.parse.quote(file_name))
 fig.show()
-fig.write_html(dirname + '/scripts/algorithms/partition_based_patrolling/plot/'+ graph_name +"_"+  ".html")
