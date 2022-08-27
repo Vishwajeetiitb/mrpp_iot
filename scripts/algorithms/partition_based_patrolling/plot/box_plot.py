@@ -10,12 +10,15 @@ import urllib.parse
 
 
 graph_name = 'iitb_full'
-no_agents_list = [1,3,5,7,9]
-algo_list = ['mrpp_iot3_packet_loss_250','mrpp_iot3_packet_loss_350','mrpp_iot3_packet_loss_500']
+no_agents_list = [5,7,9]
+algo_list = ['iot_communication_network_150','iot_communication_network_250','iot_communication_network_350','iot_communication_network_500']
 steady_time_stamp = 3000
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 available_comparisons = ['avg_idleness', 'worst_idleness']
-comparison_parameter_index = 1
+
+
+stamp_as_points = True
+comparison_parameter_index = 0
 
 
 # fig = go.Figure(layout=go.Layout(
@@ -37,11 +40,16 @@ for no_agents in no_agents_list:
         idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data.npy")
         stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps.npy")
         idle = idle[np.argwhere(stamps>steady_time_stamp)[0][0]:]  # Taking idlness values after steady state
-        worst_idles = idle.max(axis=0)
-        avg_idles = np.average(idle,axis=0)
-        for avg_node_idle,worst_node_idle in zip(avg_idles,worst_idles):
-            idle_dic = {'Average Idleness' : [avg_node_idle],'Worst Idleness' : [worst_node_idle],'Algorithm': [algo_name], 'Agents' : [no_agents]}
-            df = pd.concat([df,pd.DataFrame(idle_dic,index=[0])])
+        worst_idles = idle.max(axis=int(stamp_as_points))
+        avg_idles = np.average(idle,axis=int(stamp_as_points))
+        df_temp = pd.DataFrame()
+
+        df_temp['Worst Idleness'] = worst_idles
+        df_temp['Average Idleness'] = avg_idles
+        df_temp['Algorithm']= [algo_name]*idle.shape[int(not stamp_as_points)]
+        df_temp['Agents'] = [no_agents]*idle.shape[int(not stamp_as_points)]
+        df = pd.concat([df,df_temp])
+
 
 # fig.update_traces(quartilemethod="exclusive") # or "inclusive", or "linear" by default
 
@@ -73,4 +81,4 @@ elif comparison_parameter_index ==1:
     fig.write_html(plot_dir+file_name)
     print("http://vishwajeetiitb.github.io/mrpp_iot/scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/wrost_node_idle/' + urllib.parse.quote(file_name))
 
-# fig.show()
+fig.show()

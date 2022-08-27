@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
+import enum
+from xxlimited import new
 from matplotlib import axis
 import numpy as np
 from scipy.spatial import Voronoi
 from scipy.spatial import ConvexHull, convex_hull_plot_2d
 import matplotlib.pyplot as plt
-from sympy import *
 import networkx as nx
 from scipy._lib.decorator import decorator as _decorator
 from yaml import Mark
@@ -24,12 +25,14 @@ from shapely.ops import cascaded_union as Shapely_cascaded_union
 import sys
 import pandas as pd
 import rospkg
+import alphashape
+import pickle
 
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 
 
-# graph_name = 'grid_5_5'
-# no_of_base_stations = 3
+# graph_name = 'iitb_full'
+# no_of_base_stations = 20
 
 graph_name = sys.argv[1]
 no_of_base_stations = int(sys.argv[2])
@@ -152,54 +155,37 @@ def voronoi_plot_2d_clip(vor, ax=None, **kw):
             far_point = vor.vertices[i] + direction * ptp_bound.max()
 
             Infinite_segments.append([vor.vertices[i], far_point])
-    vor_hull = ConvexHull(vor.points)
-    vor_hull_points = []
-    for i in vor_hull.vertices:
-        vor_hull_points.append(Point(vor.points[i]))
+    
+    
 
-    vor_hull_points = np.array(vor_hull_points)
-    vor_hull_poly = Polygon(*tuple(vor_hull_points)) # Define Convex Hull Polygon
-
-    # Clip the vornoi Regions inside Convex hull
     final_regions = []
-    test = 0
-    for point in vor.points:
-        enclosed_point_index = np.where(vor.points==point)[0][0] 
+    for idx,point in enumerate(vor.points):
+        # print(point,idx)
+        enclosed_point_index = idx
         region_index = vor.point_region[enclosed_point_index]
         region_points_indices = vor.regions[region_index]
         
         if -1 not in region_points_indices:
-            enclosed_point_index = np.where(vor.points==point)[0][0] 
             finite_region_index = vor.point_region[enclosed_point_index]
             finite_region_points_indices = vor.regions[finite_region_index]
             finite_region = vor.vertices[finite_region_points_indices]
-            finite_region_poly = Polygon(*tuple(finite_region))
-            clip_region_points = hull_poly.intersection(finite_region_poly)
-            finite_region_temp = finite_region
-            for p in finite_region:
-                if hull_poly.encloses_point(p) == False:
-                    finite_region_temp = np.delete(finite_region_temp,np.where(finite_region_temp==p)[0][0],0)
-            finite_region = finite_region_temp
-            for clip in clip_region_points:
-                finite_region = np.append(finite_region,[clip],axis=0)
-            final_regions.append(finite_region)  #appending to final set of polygon and its seed
+            b = Shapely_polygon(finite_region.tolist())
+            x,y = hull.intersection(b).exterior.coords.xy
+            finite_region = np.column_stack((x,y))[:-1,:]
+            final_regions.append(finite_region)
 
         else:
             # Finding regions of hull which cut the boundary regions
-
-            enclosed_point_index = enclosed_point_index
-            Infinite_region_index = region_index
+            
             Infinite_region_points_indices = region_points_indices
-
             while Infinite_region_points_indices.index(-1) !=0:
                 Infinite_region_points_indices.append(Infinite_region_points_indices.pop(0))
             Infinite_region_points_indices.remove(-1)
-            
             Infinite_region = vor.vertices[Infinite_region_points_indices]
             point_index = np.where(vor.points==point)[0][0]
             point_ridge_indices =np.where(vor.ridge_points==point_index)[0]
             ridge_segment_vertices = np.take(vor.ridge_vertices,point_ridge_indices,axis=0)
-
+            
             for ridge_segment_vertex, m in zip(ridge_segment_vertices,range(ridge_segment_vertices.shape[0])):
             
                 if -1 in ridge_segment_vertex:
@@ -220,18 +206,15 @@ def voronoi_plot_2d_clip(vor, ax=None, **kw):
                     else:
                         Infinite_region = np.append(Infinite_region,[far_point],axis=0)
                   
-            a = Shapely_polygon(hull_points.tolist())
             b = Shapely_line(Infinite_region.tolist())
             x,y = b.coords.xy
             color_list = ['r','g','c','b','m','k']
-            # ax.plot(x,y,'-k',color=color_list[test],linewidth=5-test)
-            # test+=1
-            c = Shapely_split(a,b) 
+            c = Shapely_split(hull,b) 
             issue = True
             for poly in c.geoms:
                 if poly.contains(Shapely_point(point)) or poly.intersects(Shapely_point(point)):
                     x,y = poly.exterior.coords.xy
-                    Infinite_region = np.column_stack((x,y))
+                    Infinite_region = np.column_stack((x,y))[:-1,:]
                     issue = False
             if issue: 
                 print('Issue detected')
@@ -247,7 +230,6 @@ def voronoi_plot_2d_clip(vor, ax=None, **kw):
                 sys.exit()
             final_regions.append(Infinite_region)  #appending to final set of polygon and its seed
 
-
     ax.add_collection(LineCollection(finite_segments,
                                      colors=line_colors,
                                      lw=line_width,
@@ -262,37 +244,49 @@ def voronoi_plot_2d_clip(vor, ax=None, **kw):
     ax.plot(vor.points[:,0], vor.points[:,1], 'o',markersize=1.5)
     hull_x,hull_y = zip(*np.append(hull_points,[hull_points[0]],axis=0))
     ax.plot(hull_x, hull_y, 'k-')
-    _adjust_bounds(ax, hull.points)
+   
+
+    
+    _adjust_bounds(ax, hull_points)
     return ax,np.array(final_regions,dtype=object)
 
 
 def base_station_initial_points(boundary_poly,n):
 
     minx, miny, maxx, maxy = boundary_poly.bounds
+
     random_x = None
     random_y = None
     base_station_points = []
     for i in range(n):
         is_inside = False
         while not is_inside:
+            # print('lol')
             random_x = np.random.uniform( minx, maxx, 1 )[0]
             random_y = np.random.uniform( miny, maxy, 1 )[0]
-            is_inside = boundary_poly.encloses_point([random_x,random_y])
+            # print(random_x,random_y,boundary_poly.contains(Shapely_point([random_x,random_y])))
+            is_inside = boundary_poly.contains(Shapely_point([random_x,random_y]))
         base_station_points.append([random_x,random_y])
     return base_station_points
 
 
 def get_boundary_hull(points):
     global hull, hull_points, hull_poly
+    hull_path = dirname+'/graph_ml/'+graph_name+'_hull'
+    if os.path.exists(hull_path):
+        with open(hull_path, "rb") as poly_file:
+            hull = pickle.load(poly_file)
+    else:    
 
-    hull = ConvexHull(initial_points)
-    hull_points = []
-    for i in hull.vertices:
-        hull_points.append(Point(initial_points[i]))
+        # hull = ConvexHull(initial_points)
+        hull =alphashape.alphashape(initial_points)
+    
+        with open(hull_path, "wb") as poly_file:
+            pickle.dump(hull, poly_file, pickle.HIGHEST_PROTOCOL)
 
+    hull_points=np.column_stack((hull.exterior.coords.xy)).tolist()
     hull_points = np.array(hull_points)
-    hull_poly = Polygon(*tuple(hull_points)) # Define Convex Hull Polygon
-
+    hull_poly = Shapely_polygon(hull_points.tolist()) # Define Convex Hull Polygon
 
 def save_data():
     global base_stations_df
@@ -305,7 +299,6 @@ def save_data():
         base_station_dic = {'location' : [p],'Radius': radii[idx], 'covered_nodes' : [covered_nodes], 'Total_nodes_covered' : len(covered_nodes)}
         base_stations_df = pd.concat([base_stations_df,pd.DataFrame(base_station_dic,index=[idx])])        
 
-    print(base_stations_df)
     base_stations_df.to_csv(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations.csv')
     np.save(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations.npy',new_base_points)
 
@@ -332,28 +325,33 @@ rho_new = None
 radii = []
 while True:
     a = datetime.datetime.now()
+    # print(new_base_points)
     voronoi = Voronoi(new_base_points)
     previous_base_points = new_base_points
     plt_ax,cliped_regions = voronoi_plot_2d_clip(voronoi)
+    # print(cliped_regions)
+
 
     new_base_points = []
     radii = []
     rho_old = rho_new
     for idx,region in enumerate(cliped_regions):
         c_x,c_y,r = smallestenclosingcircle.make_circle(region)
+        # print(region)
         region_poly = Shapely_polygon(region)
         if region_poly.contains(Shapely_point([c_x,c_y])):
             new_base_points.append([c_x,c_y])
-
+            # print('c',[c_x,c_y])
         else:
             # p = previous_base_points[idx]
-            region_poly = Polygon(*tuple(region))
             p = base_station_initial_points(region_poly,1)[0]
             new_base_points.append(p)
+            # print('p',p)
 
         radii.append(r)
         enclosing_circle = plt.Circle(( c_x , c_y ), r ,fill=False,color='#34eb43')
         plt_ax.add_artist(enclosing_circle)
+    # print(new_base_points)
     rho_new = int(max(radii))
     x_axis = np.array(radii)
     x_axis = np.sort(x_axis)
@@ -367,12 +365,11 @@ while True:
     
     i+=1
     if rho_new is not None and rho_old is not None:
-        if abs(rho_new-rho_old)/max(rho_new,rho_old) < 0.03:
+        if abs(rho_new-rho_old)/max(rho_new,rho_old) < 0.001:
             for node,data in graph.nodes(data=True):
                 plt_ax.plot(data['x'],data['y'],'*',color='#FFD433') 
             plt.savefig(graph_results_path+'partition_stage.png')
             break
     plt.close('all')    
-
 save_data()
 

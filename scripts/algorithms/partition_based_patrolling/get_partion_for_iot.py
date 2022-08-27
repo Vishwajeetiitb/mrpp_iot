@@ -41,7 +41,7 @@ def get_boundary_hull(points):
 
 if __name__ == '__main__':
     dirname = rospkg.RosPack().get_path('mrpp_sumo')
-    Iot_device_ranges = [500,350,250] # Ranges keep it in decreasing order
+    Iot_device_ranges = [150] # Ranges keep it in decreasing order
     graph_name = 'iitb_full'
     graph_path = dirname +'/graph_ml/'+ graph_name + '.graphml'
     graph = nx.read_graphml(graph_path)
@@ -59,14 +59,14 @@ if __name__ == '__main__':
     # initial_no_of_base_stations = max(3,int(hull.area/(pi*(Iot_device_range*Iot_device_range))))
     # print(initial_no_of_base_stations)
     # no_of_base_stations = initial_no_of_base_stations
-    no_of_base_stations = 4
+    no_of_base_stations = 30
     rho_max = None
 
     for range in Iot_device_ranges:
         
         while True:
-            print('python3 ' + dirname +'/scripts/algorithms/partition_based_patrolling/graph_partition_temp.py '+ graph_name + ' ' + str(no_of_base_stations))
-            os.system('python3 ' + dirname +'/scripts/algorithms/partition_based_patrolling/graph_partition_temp.py '+ graph_name + ' ' + str(no_of_base_stations))
+            print('python3 ' + dirname +'/scripts/algorithms/partition_based_patrolling/graph_partition.py '+ graph_name + ' ' + str(no_of_base_stations))
+            os.system('python3 ' + dirname +'/scripts/algorithms/partition_based_patrolling/graph_partition.py '+ graph_name + ' ' + str(no_of_base_stations))
             graph_results_path = dirname +'/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/' + str(no_of_base_stations) + '_base_stations/'
             base_stations_df   = pd.read_csv(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations.csv',converters={'location': pd.eval,'Radius': pd.eval})
             rho_max = max(base_stations_df['Radius'])

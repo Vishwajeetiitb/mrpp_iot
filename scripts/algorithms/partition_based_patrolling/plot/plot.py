@@ -5,11 +5,11 @@ import sys
 import rospkg
 
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
-no_agents = int(sys.argv[1])
+no_agents = 3
 # which_node = sys.argv[2]
 which_node = 'a'
 graph_name = 'iitb_full'
-algo_name = 'mrpp_iot_new_250'
+algo_name = 'iot_communication_network_500'
 df = px.data.gapminder().query("country=='Canada'")
 
 

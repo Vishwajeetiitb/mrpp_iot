@@ -6,8 +6,8 @@ import rospkg
 import glob
 import rospy
 import os
-no_of_bots = [7,9]
-algos = ['mrpp_iot2_packet_loss']
+no_of_bots = [5,7,9]
+algos = ['iot_communication_network']
 graphs = ['iitb_full']
 
 dir_name = rospkg.RosPack().get_path('mrpp_sumo')

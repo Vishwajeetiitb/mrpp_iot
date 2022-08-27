@@ -14,11 +14,15 @@ import urllib.parse
 
 
 graph_name = 'iitb_full'
-algo_list = ['mrpp_iot_packet_loss_500','mrpp_iot2_packet_loss_500','mrpp_iot3_packet_loss_500','cr']
+algo_list = ['iot_communication_network_250','iot_communication_network_350','iot_communication_network_500','cr']
 row_size = 1
 col_size = 4
-no_agents = 5
+no_agents = 9
 steady_time_stamp = 3000
+
+# available_comparisons = ['Average Node Idleness', 'Worst Node Idleness']
+# comparison_parameter_index = 0
+
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
 
@@ -71,7 +75,7 @@ node_trace = go.Scatter(
         reversescale=True,
         coloraxis = "coloraxis",
         color=[],
-        size=6,
+        size=8,
         colorbar=dict(
             thickness=15,
             title='Avg node Idleness (post steady state) ',
@@ -92,7 +96,7 @@ def get_base_station_shape(algo):
         base_stations.append(dict(type="circle",
                                     xref="x",
                                     yref="y",
-                                    fillcolor="rgba(1,1,1,0.1)",
+                                    fillcolor="rgba(1,1,1,0.06)",
                                     x0=location[0]-radius,
                                     y0=location[1]-radius,
                                     x1=location[0]+radius,
@@ -113,7 +117,13 @@ def get_base_station_shape(algo):
 ###################################################################### Subplots ####################################################################################
 
 fig = make_subplots(rows=row_size, cols=col_size,subplot_titles=[i for i in algo_list])
-
+fig.update_layout(title='Average Node Idleness Network Plot for ' + str(no_agents) + ' Agents' ,
+                titlefont_size=16,
+                title_x=0.5,
+                coloraxis = {'colorscale':'Jet'},
+                )
+fig.update_yaxes(scaleanchor = "x",scaleratio = 1)
+fig.update_xaxes(scaleanchor = "y",scaleratio = 1)
 for m,algo_name in enumerate(algo_list):
     idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data.npy")
     stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps.npy")
@@ -132,7 +142,7 @@ for m,algo_name in enumerate(algo_list):
     fig.add_trace(edge_trace,row=int(m/col_size)+1,col=m%col_size+1)
     fig.add_trace(node_trace,row=int(m/col_size)+1,col=m%col_size+1)
 
-    if 'mrpp_iot' in algo_name:
+    if 'iot' in algo_name:
         base_station_shape,icons = get_base_station_shape(algo_name)
         for shape,img in zip(base_station_shape,icons):
             fig.add_shape(shape,row=int(m/col_size)+1,col=m%col_size+1)
@@ -141,12 +151,7 @@ for m,algo_name in enumerate(algo_list):
 
     
     
-fig.update_layout(title='Average Node Idleness Network Plot',
-                titlefont_size=16,
-                title_x=0.5,
-                coloraxis = {'colorscale':'Jet'},
-                )
-fig.update_yaxes(scaleanchor = "x",scaleratio = 1)
+
 
 
 
@@ -180,15 +185,6 @@ fig.update_yaxes(scaleanchor = "x",scaleratio = 1)
 #     fig.update_layout(shapes=base_stations, images=icons)
 
 
-
-
-
-
-
-
-
-
-
 file_name = ""
 for idx,algo in enumerate(algo_list):
     if not idx:
@@ -205,4 +201,4 @@ if not os.path.exists(plot_dir):
 fig.write_html(plot_dir+file_name)
 
 print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/network_plot/' + urllib.parse.quote(file_name))
-# fig.show()
+fig.show()
