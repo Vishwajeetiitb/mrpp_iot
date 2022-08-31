@@ -23,10 +23,10 @@ import numpy as np
 import os
 import shutil
 from time import sleep
-
+import sys
 
 rospack = rospkg.RosPack()
-
+input_device_range  = int(sys.argv[1])
 
 class MRPP_IOT:
     def __init__(self, graph):
@@ -34,7 +34,7 @@ class MRPP_IOT:
         self.graph = graph
         self.stamp = 0.
         self.nodes = list(self.graph.nodes())
-        self.Iot_device_range = 150
+        self.Iot_device_range = input_device_range
         self.graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
         self.base_stations_df = pd.read_csv(self.graph_results_path + graph_name + '/' + str(self.Iot_device_range) + '_range_base_stations.csv',converters={'location': pd.eval,'Radius': pd.eval})
         
@@ -75,10 +75,54 @@ class MRPP_IOT:
             self.agents_arr = np.add(self.agents_arr,dev)
             self.global_idle +=dev
 
-            for n in data.node_id:
+            ## Create set containing Agent id and Base stations containing that Agent(Agent Location)
+            bot_base_stations = []
+            for n,bot in zip(data.node_id,data.robot_id):
                 node_index = self.nodes.index(n)
                 self.global_idle[node_index] = 0
+                which_base_stations = self.base_stations_df.index[self.base_stations_df['covered_nodes'].str.contains('\''+ n + "\'") ].tolist()
+                which_base_stations.append(bot)
+                bot_base_stations.append(set(which_base_stations))
             
+
+            ## Connected component algorithm : To group network of connected base stations and Agents
+            pool = set(map(frozenset, bot_base_stations))
+            groups = []
+            while pool:
+                groups.append(set(pool.pop()))
+                while True:
+                    for candidate in pool:
+                        if groups[-1] & candidate:
+                            groups[-1] |= candidate
+                            pool.remove(candidate)
+                            break
+                    else:
+                        break
+
+            ## Comparison between elements of group starts here 
+            for group in groups:
+                comparison_array = []
+                for element in group:
+                    if 'bot' in str(element):
+                        node = data.node_id[data.robot_id.index(element)]
+                        node_index = self.nodes.index(node)
+                        bot_id = int(element.split('_')[-1])
+                        self.agents_arr[bot_id][node_index] = 0
+                        comparison_array.append(self.agents_arr[bot_id,:])
+                    else:
+                        comparison_array.append(self.base_stations_arr[element,:])
+
+                common_data = np.min(comparison_array,axis=0) ## Comparision of Data of all agents and base stations in same group (network)
+
+                for element in group:
+                    if 'bot' in str(element):
+                        bot_id = int(element.split('_')[-1])
+                        self.agents_arr[bot_id,:] = common_data
+                    else:
+                        self.base_stations_arr[element,:] = common_data
+
+
+            ## Monitoring and saving data for graph    
             self.stamps = np.append(self.stamps,self.stamp)
             self.data_arr = np.append(self.data_arr,[self.global_idle],axis=0)
             
@@ -88,20 +132,20 @@ class MRPP_IOT:
         t = req.stamp
         bot_id = int(req.name.split('_')[-1])
 
-        node_index = self.nodes.index(node)
-        self.agents_arr[bot_id,node_index] = 0
-        # self.global_idle[node_index] = 0
+        # node_index = self.nodes.index(node)
+        # self.agents_arr[bot_id,node_index] = 0
+        # # self.global_idle[node_index] = 0
 
-        ## Data Transfer between base stations and agend
-        which_base_stations = self.base_stations_df.index[self.base_stations_df['covered_nodes'].str.contains('\''+ node + "\'") ].tolist()
+        # ## Data Transfer between base stations and agend
+        # which_base_stations = self.base_stations_df.index[self.base_stations_df['covered_nodes'].str.contains('\''+ node + "\'") ].tolist()
 
-            # Base stations send data to robot 
-        for base_station_id in which_base_stations:
-            self.agents_arr[bot_id,:] = np.minimum(self.base_stations_arr[base_station_id,:],self.agents_arr[bot_id,:]) 
+        #     # Base stations send data to robot 
+        # for base_station_id in which_base_stations:
+        #     self.agents_arr[bot_id,:] = np.minimum(self.base_stations_arr[base_station_id,:],self.agents_arr[bot_id,:]) 
 
-            # After final comparision robot sends it data to both base stations
-        for base_station_id in which_base_stations:
-            self.base_stations_arr[base_station_id,:] = np.minimum(self.base_stations_arr[base_station_id,:],self.agents_arr[bot_id,:])
+        #     # After final comparision robot sends it data to both base stations
+        # for base_station_id in which_base_stations:
+        #     self.base_stations_arr[base_station_id,:] = np.minimum(self.base_stations_arr[base_station_id,:],self.agents_arr[bot_id,:])
 
         ## Idles of neighbouring nodes
         neigh = list(self.graph.successors(node))

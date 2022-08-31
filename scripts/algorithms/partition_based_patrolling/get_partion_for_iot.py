@@ -41,7 +41,7 @@ def get_boundary_hull(points):
 
 if __name__ == '__main__':
     dirname = rospkg.RosPack().get_path('mrpp_sumo')
-    Iot_device_ranges = [150] # Ranges keep it in decreasing order
+    Iot_device_ranges = [10000] # Ranges keep it in decreasing order
     graph_name = 'iitb_full'
     graph_path = dirname +'/graph_ml/'+ graph_name + '.graphml'
     graph = nx.read_graphml(graph_path)
@@ -51,15 +51,12 @@ if __name__ == '__main__':
     get_boundary_hull(graph_points)
 
     graph_all_results_path = dirname +'/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/'
-    if os.path.exists(graph_all_results_path):
-        shutil.rmtree(graph_all_results_path)
-        os.makedirs(graph_all_results_path)
-    else:
+    if not os.path.exists(graph_all_results_path):
         os.makedirs(graph_all_results_path)
     # initial_no_of_base_stations = max(3,int(hull.area/(pi*(Iot_device_range*Iot_device_range))))
     # print(initial_no_of_base_stations)
     # no_of_base_stations = initial_no_of_base_stations
-    no_of_base_stations = 30
+    no_of_base_stations = 1
     rho_max = None
 
     for range in Iot_device_ranges:

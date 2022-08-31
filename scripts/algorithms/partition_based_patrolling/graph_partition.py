@@ -303,6 +303,9 @@ def save_data():
     np.save(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations.npy',new_base_points)
 
 
+
+
+    
 rng = np.random.default_rng(12345)
 # old_points = rng.random((25, 2))
 old_points = []
@@ -313,24 +316,34 @@ for node,data in graph.nodes(data=True):
 initial_points = old_points
 get_boundary_hull(initial_points)
 
+base_stations_df = pd.DataFrame()
+new_base_points = None
+radii = []
+
+if no_of_base_stations ==1:
+    x,y = hull.exterior.coords.xy
+    region = np.column_stack((x,y))[:-1,:]
+    c_x,c_y,r = smallestenclosingcircle.make_circle(region)
+    new_base_points = [[c_x,c_y]]
+    radii.append(r)
+    save_data()
+    sys.exit()
+
 starting_base_points = base_station_initial_points(hull_poly,n=no_of_base_stations)
 voronoi = Voronoi(starting_base_points)
 new_base_points = starting_base_points
 sd = 100
 i = 0
-base_stations_df = pd.DataFrame()
+
 cutoff = 0.3
 rho_old = None
 rho_new = None
-radii = []
+
 while True:
     a = datetime.datetime.now()
-    # print(new_base_points)
     voronoi = Voronoi(new_base_points)
     previous_base_points = new_base_points
     plt_ax,cliped_regions = voronoi_plot_2d_clip(voronoi)
-    # print(cliped_regions)
-
 
     new_base_points = []
     radii = []

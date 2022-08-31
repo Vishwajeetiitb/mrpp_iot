@@ -13,7 +13,7 @@ import os
 import urllib.parse
 
 graph_name = 'iitb_full'
-range = 500
+range = 10000
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 # no_of_base_stations = np.load(dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/required_no_of_base_stations.npy')[0]
 graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
@@ -145,4 +145,4 @@ fig.write_html(plot_dir+file_name)
 print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/communication_graph/' + urllib.parse.quote(file_name))
 
 
-# fig.show()
+fig.show()

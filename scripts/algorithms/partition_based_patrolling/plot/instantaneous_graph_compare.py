@@ -15,7 +15,7 @@ from plotly.offline import iplot
 
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 no_agents_list = [7,9,11,13]
-algo_list = ['iot_communication_network_250','iot_communication_network_350','iot_communication_network_500','cr','reactive_flag']
+algo_list = ['iot_communication_network_250','iot_communication_network_350','iot_communication_network_500','cr']
 available_comparisons = ['Idleness', 'Worst Idleness']
 comparison_parameter_index = 0
 scater_nodes_algo_index =  2# putting scatter for only one algo is better otherwise mess put -1 if don't require node scatter
@@ -53,6 +53,9 @@ for idx,no_agents in enumerate(no_agents_list):
             # p = pd.DataFrame()
             # p['node_idles'] = np.repeat(stamps,idle.shape[1])
             # p['stamp'] = 
+            discrete = np.arange(0,stamps.shape[0],int(stamps.shape[0]/100))
+            idle = np.take(idle,discrete,axis=0)
+            stamps = np.take(stamps,discrete,axis=0)
             fig.add_trace(go.Scattergl(x=np.repeat(stamps,idle.shape[1]) , y=idle.flatten(),
                             mode='markers',
                             marker=dict(
@@ -64,7 +67,7 @@ for idx,no_agents in enumerate(no_agents_list):
           colorscale='Jet',
           reversescale=False,
           size=5,
-          opacity = 0.02,
+          opacity = 0.2,
           color=idle.flatten(),
           colorbar=dict(
               thickness=15,
