@@ -1,23 +1,22 @@
 #!/usr/bin/env python3
 
-from copyreg import pickle
 import os
+import pickle
+import shutil
 import sys
-import networkx as nx
-from scipy.spatial import Voronoi
-from scipy.spatial import ConvexHull, convex_hull_plot_2d
+from copyreg import pickle
 from math import *
-from sympy import *
-from shapely.geometry import Polygon as Shapely_polygon
-from shapely.geometry import LineString as Shapely_line
-from shapely.geometry import Point as Shapely_point
+
+import alphashape
+import networkx as nx
 import numpy as np
 import pandas as pd
-import shutil
 import rospkg
-import alphashape
-import pickle
-
+from scipy.spatial import ConvexHull, Voronoi, convex_hull_plot_2d
+from shapely.geometry import LineString as Shapely_line
+from shapely.geometry import Point as Shapely_point
+from shapely.geometry import Polygon as Shapely_polygon
+from sympy import *
 
 
 def get_boundary_hull(points):
