@@ -42,7 +42,6 @@ class MRPP_IOT:
         self.dirname = rospkg.RosPack().get_path('mrpp_sumo')
         self.name = rospy.get_param("/random_string")
         self.algo_name = 'iot_communication_network'
-        
 
         self.total_base_stations = self.base_stations_df.shape[0]
         self.total_nodes = len(self.nodes)
