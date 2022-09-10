@@ -13,9 +13,9 @@ algo_name = 'iot_communication_network_500'
 df = px.data.gapminder().query("country=='Canada'")
 
 
-idle = np.load(dirname+ "/post_process/"+ graph_name+ "/"+ algo_name + "/"+ str(no_agents)+ "_agents/data.npy")
+idle = np.load(dirname+ "/post_process/"+ graph_name+ "/"+ algo_name + "/"+ str(no_agents)+ "_agents/data_final.npy")
 graph_idle = np.average(idle,axis=1)
-stamps = np.load(dirname+ "/post_process/"+ graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/stamps.npy")
+stamps = np.load(dirname+ "/post_process/"+ graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/stamps_final.npy")
 print()
 
 if which_node == 'a':

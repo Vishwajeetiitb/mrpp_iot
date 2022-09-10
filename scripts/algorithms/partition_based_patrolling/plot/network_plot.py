@@ -125,8 +125,8 @@ fig.update_layout(title='Average Node Idleness Network Plot for ' + str(no_agent
 fig.update_yaxes(scaleanchor = "x",scaleratio = 1)
 fig.update_xaxes(scaleanchor = "y",scaleratio = 1)
 for m,algo_name in enumerate(algo_list):
-    idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data.npy")
-    stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps.npy")
+    idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data_final.npy")
+    stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps_final.npy")
     idle = idle[np.argwhere(stamps>steady_time_stamp)[0][0]:]  # Taking idlness values after steady state
     avg_idle = np.average(idle,axis=0)
     node_text = []

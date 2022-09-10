@@ -42,8 +42,8 @@ for idx,no_agents in enumerate(no_agents_list):
     
     for m,algo_name in enumerate(algo_list):
         df = pd.DataFrame()
-        idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data.npy")
-        stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps.npy")
+        idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data_final.npy")
+        stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps_final.npy")
         
         if comparison_parameter_index == 0 : val = np.average(idle,axis=1)
         elif comparison_parameter_index == 1 : val = np.max(idle,axis=1)
