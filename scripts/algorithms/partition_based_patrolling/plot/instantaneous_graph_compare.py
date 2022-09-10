@@ -10,12 +10,12 @@ import pandas as pd
 import os
 from slugify import slugify
 import urllib.parse
-# import chart_studio.plotly as py
+import chart_studio.plotly as py
 from plotly.offline import iplot
 
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 no_agents_list = [7,9,11,13]
-algo_list = ['iot_communication_network_250','iot_communication_network_350','iot_communication_network_500','cr']
+algo_list = ['iot_communication_network_250','iot_communication_network_350','iot_communication_network_500']
 available_comparisons = ['Idleness', 'Worst Idleness']
 comparison_parameter_index = 0
 scater_nodes_algo_index =  2# putting scatter for only one algo is better otherwise mess put -1 if don't require node scatter
@@ -45,7 +45,10 @@ for idx,no_agents in enumerate(no_agents_list):
         idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data_final.npy")
         stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps_final.npy")
         
-        if comparison_parameter_index == 0 : val = np.average(idle,axis=1)
+        if comparison_parameter_index == 0 : 
+            val = np.average(idle,axis=1)
+            # val = np.average(idle,axis=1).cumsum()
+            # val = val/np.arange(1,val.shape[0]+1)
         elif comparison_parameter_index == 1 : val = np.max(idle,axis=1)
         fig.add_trace(go.Scatter(x=stamps, y=val,mode='lines',marker=dict(color=color_list[m]),legendgroup=m+1,name=algo_name,showlegend=(True if idx==0 else False)),row=int(idx/col_size)+1,col=idx%col_size+1)
         if scater_nodes_algo_index !=-1 and scater_nodes_algo_index ==m:
@@ -58,24 +61,24 @@ for idx,no_agents in enumerate(no_agents_list):
             stamps = np.take(stamps,discrete,axis=0)
             fig.add_trace(go.Scattergl(x=np.repeat(stamps,idle.shape[1]) , y=idle.flatten(),
                             mode='markers',
-                            marker=dict(
-          showscale=False,
-          # colorscale options
-          #'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
-          #'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
-          #'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
-          colorscale='Jet',
-          reversescale=False,
-          size=5,
-          opacity = 0.2,
-          color=idle.flatten(),
-          colorbar=dict(
-              thickness=15,
-              title="Instantaneous node idleness values",
-              xanchor='left',
-              titleside='right'
-          ),
-          line_width=0.5),showlegend=(True if idx==0 else False),name=algo_name),row=int(idx/col_size)+1,col=idx%col_size+1)  
+                                                marker=dict(
+                            showscale=False,
+                            # colorscale options
+                            #'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
+                            #'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
+                            #'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
+                            colorscale='Jet',
+                            reversescale=False,
+                            size=5,
+                            opacity = 0.2,
+                            color=idle.flatten(),
+                            colorbar=dict(
+                                thickness=15,
+                                title="Instantaneous node idleness values",
+                                xanchor='left',
+                                titleside='right'
+                            ),
+                            line_width=0.5),legendgroup=100,showlegend=(True if idx==0 else False),name=algo_name),row=int(idx/col_size)+1,col=idx%col_size+1)  
                             
         
 
@@ -113,5 +116,3 @@ if comparison_parameter_index == 1 :
 
     print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/instantaneous_graph_worst_idle/' + urllib.parse.quote(file_name))
     iplot(fig)
-
-import chart_studio.plotly as py
