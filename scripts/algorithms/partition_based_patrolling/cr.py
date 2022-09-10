@@ -11,6 +11,7 @@ import networkx as nx
 from mrpp_sumo.srv import NextTaskBot, NextTaskBotResponse, AlgoReady, AlgoReadyResponse
 from mrpp_sumo.msg import AtNode
 import random as rn
+from time import sleep
 
 import os 
 import shutil
