@@ -11,7 +11,7 @@ import urllib.parse
 
 graph_name = 'iitb_full'
 no_agents_list = [5,7,9]
-algo_list = ['iot_communication_network1_150','iot_communication_network1_250','iot_communication_network_150','iot_communication_network_250','cr']
+algo_list = ['iot_communication_network_150','iot_communication_network_250']
 steady_time_stamp = 3000
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 available_comparisons = ['avg_idleness', 'worst_idleness']
@@ -37,8 +37,8 @@ comparison_parameter_index = 0
 df = pd.DataFrame()
 for no_agents in no_agents_list:
     for algo_name in algo_list:  
-        idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data.npy")
-        stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps.npy")
+        idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data_final.npy")
+        stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps_final.npy")
         idle = idle[np.argwhere(stamps>steady_time_stamp)[0][0]:]  # Taking idlness values after steady state
         worst_idles = idle.max(axis=int(stamp_as_points))
         avg_idles = np.average(idle,axis=int(stamp_as_points))

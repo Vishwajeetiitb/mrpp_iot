@@ -71,8 +71,8 @@ node_trace = go.Scatter(
         line_width=2))
 
 ## Idlness colour scheme 
-idle = np.load(dirname+ "/post_process/"  + graph_name+ "/" + algo_name + "/"+ str(no_agents)+ "_agents/data.npy")
-stamps = np.load(dirname+ "/post_process/" + graph_name+ "/" + algo_name + "/"+ str(no_agents)+ "_agents/stamps.npy")
+idle = np.load(dirname+ "/post_process/"  + graph_name+ "/" + algo_name + "/"+ str(no_agents)+ "_agents/data_final.npy")
+stamps = np.load(dirname+ "/post_process/" + graph_name+ "/" + algo_name + "/"+ str(no_agents)+ "_agents/stamps_final.npy")
 
 steady_time_stamp = 3000
 idle = idle[np.argwhere(stamps>steady_time_stamp)[0][0]:]  # Taking idlness values after steady state
