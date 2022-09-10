@@ -122,5 +122,5 @@ if __name__ == '__main__':
     done = False
     while not done:
         done = rospy.get_param('/done')
-
+    sleep(1.0)
     s.save_data()

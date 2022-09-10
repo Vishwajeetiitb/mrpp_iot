@@ -7,7 +7,7 @@ import glob
 import rospy
 import os
 no_of_bots = [1,3,5,7,9,11,13]
-algos = ['iot_communication_network']
+algos = ['cr']
 graphs = ['iitb_full']
 iot_device_ranges = [150,250,350,500,10000]
 how_many_iterations = 1 # This variable is to iterate over ranges if algo is based on iot, don't change this value from 1
@@ -31,12 +31,13 @@ for graph_name in graphs:
                 rospy.set_param('/algo_name',algo_name)
                 rospy.set_param('/no_of_deads',0)
                 rospy.set_param('/run_id',0)
+                rospy.set_param('/random_string','test')
                 if 'iot' in algo_name: 
-                    rospy.set_param('/random_string',algo_name+'_'+str(iot_device_ranges[idx])+'_'+str(no_agents)+'agents')
+                    # rospy.set_param('/random_string',algo_name+'_'+str(iot_device_ranges[idx])+'_'+str(no_agents)+'agents')
                     os.system("xterm -e rosrun mrpp_sumo sumo_wrapper.py & sleep 3")
                     os.system("xterm -e rosrun mrpp_sumo "+ algo_name +".py " + str(iot_device_ranges[idx]) + " & sleep 3")
                 else :
-                    rospy.set_param('/random_string',algo_name+'_'+str(no_agents)+'agents')
+                    # rospy.set_param('/random_string',algo_name+'_'+str(no_agents)+'agents')
                     os.system("xterm -e rosrun mrpp_sumo sumo_wrapper.py & sleep 3")
                     os.system("xterm -e rosrun mrpp_sumo "+ algo_name +".py & sleep 3")
                 os.system("xterm -e rosrun mrpp_sumo command_center.py")
