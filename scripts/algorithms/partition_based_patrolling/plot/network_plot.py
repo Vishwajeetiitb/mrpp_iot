@@ -14,7 +14,7 @@ import urllib.parse
 
 
 graph_name = 'iitb_full'
-algo_list = ['iot_communication_network_250','iot_communication_network_350','iot_communication_network_500','cr']
+algo_list = ['iot_communication_network_250','iot_communication_network_350','iot_communication_network_500']
 row_size = 1
 col_size = 4
 no_agents = 9
