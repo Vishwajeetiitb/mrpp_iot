@@ -14,13 +14,13 @@ import chart_studio.plotly as py
 from plotly.offline import iplot
 
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
-no_agents_list = [7,9,11,13]
-algo_list = ['iot_communication_network_250','iot_communication_network_350','iot_communication_network_500']
+no_agents_list = [1,3,5,7,9,11]
+algo_list = ['iot_communication_network_150','iot_communication_network_250','iot_communication_network_350','iot_communication_network_500','iot_communication_network_10000','cr']
 available_comparisons = ['Idleness', 'Worst Idleness']
 comparison_parameter_index = 0
 scater_nodes_algo_index =  2# putting scatter for only one algo is better otherwise mess put -1 if don't require node scatter
 row_size = 2
-col_size = 2
+col_size = 3
 graph_name = 'iitb_full'
 color_list = [
     '#1f77b4',  # muted blue
@@ -46,9 +46,9 @@ for idx,no_agents in enumerate(no_agents_list):
         stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps_final.npy")
         
         if comparison_parameter_index == 0 : 
-            val = np.average(idle,axis=1)
-            # val = np.average(idle,axis=1).cumsum()
-            # val = val/np.arange(1,val.shape[0]+1)
+            # val = np.average(idle,axis=1)
+            val = np.average(idle,axis=1).cumsum()
+            val = val/np.arange(1,val.shape[0]+1)
         elif comparison_parameter_index == 1 : val = np.max(idle,axis=1)
         fig.add_trace(go.Scatter(x=stamps, y=val,mode='lines',marker=dict(color=color_list[m]),legendgroup=m+1,name=algo_name,showlegend=(True if idx==0 else False)),row=int(idx/col_size)+1,col=idx%col_size+1)
         if scater_nodes_algo_index !=-1 and scater_nodes_algo_index ==m:
