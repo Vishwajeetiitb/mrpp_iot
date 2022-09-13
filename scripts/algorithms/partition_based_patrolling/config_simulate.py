@@ -6,8 +6,8 @@ import rospkg
 import glob
 import rospy
 import os
-no_of_bots = [1,3,5,7,9,11,13]
-algos = ['cr']
+no_of_bots = [2,4,6,8,10,12,14]
+algos = ['iot_communication_network','cr']
 graphs = ['iitb_full']
 iot_device_ranges = [150,250,350,500,10000]
 how_many_iterations = 1 # This variable is to iterate over ranges if algo is based on iot, don't change this value from 1
