@@ -6,7 +6,7 @@ import rospkg
 import glob
 import rospy
 import os
-no_of_bots = [2,4,6,8,10,12,14]
+no_of_bots = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 algos = ['iot_communication_network','cr']
 graphs = ['iitb_full']
 iot_device_ranges = [150,250,350,500,10000]
