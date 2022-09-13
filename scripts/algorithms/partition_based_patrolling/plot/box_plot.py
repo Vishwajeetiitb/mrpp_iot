@@ -11,7 +11,7 @@ import urllib.parse
 
 graph_name = 'iitb_full'
 no_agents_list = [3,5,7,9,11,13]
-algo_list = ['iot_communication_network_150','iot_communication_network_250','iot_communication_network_350','iot_communication_network_10000','cr']
+algo_list = ['iot_communication_network_150','iot_communication_network_250','iot_communication_network_350','iot_communication_network_500','iot_communication_network_10000','cr']
 steady_time_stamp = 3000
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 available_comparisons = ['avg_idleness', 'worst_idleness']
