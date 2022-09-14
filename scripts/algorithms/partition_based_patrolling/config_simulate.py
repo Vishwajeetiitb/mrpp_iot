@@ -21,20 +21,20 @@ dir_name = rospkg.RosPack().get_path('mrpp_sumo')
 for graph_name in graphs:
     graph_path = dir_name +'/graph_ml/'+ graph_name + '.graphml'
     graph_net = nx.read_graphml(graph_path)
-    init_locations = " ".join(list(graph_net.nodes())[0:2])
+    
     for algo_name in algos:
         for no_agents in no_of_bots:
             if 'iot' in algo_name:
                 how_many_iterations = len(iot_device_ranges)
             else : how_many_iterations = 1
             for idx in range(how_many_iterations):
+                init_locations = " ".join(list(graph_net.nodes())[0:no_agents])
                 os.system("xterm -e roscore & sleep 3")
                 rospy.set_param('/init_locations',init_locations)
                 rospy.set_param('/use_sim_time',True)
                 rospy.set_param('/gui',False)
                 rospy.set_param('/graph',graph_name)
                 rospy.set_param('/init_bots',no_agents)
-                rospy.set_param('/init_locations','')
                 rospy.set_param('done',False)
                 rospy.set_param('/sim_length',30000)
                 rospy.set_param('/algo_name',algo_name)

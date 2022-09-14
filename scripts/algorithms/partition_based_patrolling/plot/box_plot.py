@@ -5,7 +5,6 @@ import rospkg
 import numpy as np
 import pandas as pd
 import os 
-from slugify import slugify
 import urllib.parse
 
 
