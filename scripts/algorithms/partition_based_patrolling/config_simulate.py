@@ -39,11 +39,12 @@ for graph_name in graphs:
                 rospy.set_param('/algo_name',algo_name)
                 rospy.set_param('/no_of_deads',0)
                 rospy.set_param('/run_id',run_id)
-                os.system("xterm -e rosrun mrpp_sumo sumo_wrapper.py & sleep 3")
                 rospy.set_param('/random_string','test')
+                os.system("xterm -e rosrun mrpp_sumo sumo_wrapper.py & sleep 3")
                 if 'iot' in algo_name:
                     for range in iot_device_ranges:
                         rospy.set_param('/iot_device_range',range)
+                        
                         os.system("xterm -e rosrun mrpp_sumo "+ algo_name +".py & sleep 3")
                         for name in rospy.get_param_names():
                             print('\n',name,':',rospy.get_param(name))
