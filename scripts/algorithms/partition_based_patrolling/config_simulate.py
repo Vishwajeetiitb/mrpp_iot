@@ -47,18 +47,18 @@ for graph_name in graphs:
                         
                         os.system("xterm -e rosrun mrpp_sumo "+ algo_name +".py & sleep 3")
                         for name in rospy.get_param_names():
-                            print('\n',name,':',rospy.get_param(name))
+                            print(name,':',rospy.get_param(name))
                 else:
                     os.system("xterm -e rosrun mrpp_sumo "+ algo_name +".py & sleep 3")
                     for name in rospy.get_param_names():
-                        print('\n',name,':',rospy.get_param(name))
+                        print(name,':',rospy.get_param(name))
 
                 os.system("xterm -e rosrun mrpp_sumo command_center.py")
                 run_end_time = datetime.now()
                 os.system("sleep 10")
                 os.system("killall xterm & sleep 3")
 
-                print('Algorithm took', run_end_time-run_start_time)
+                print('Algorithm took', run_end_time-run_start_time,'\n')
                 print('─' * 100)
 
 
