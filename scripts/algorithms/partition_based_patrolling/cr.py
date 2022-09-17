@@ -15,6 +15,9 @@ from time import sleep
 
 import os 
 import shutil
+import sys
+
+run_id = rospy.get_param('/run_id')
 
 class CR:
 
@@ -31,7 +34,7 @@ class CR:
                 self.robots['bot_{}'.format(i)][n] = 0.
 
         self.algo_name = 'cr'
-        self.sim_dir = dirname + '/post_process/'+ graph_name + '/'+ self.algo_name +'/' + str(self.num_bots) + '_agents'
+        self.sim_dir = dirname + '/post_process/'+ graph_name + '/run'+str(run_id) +'/'+ self.algo_name +'/' + str(self.num_bots) + '_agents'
         
         if os.path.exists(self.sim_dir):
             shutil.rmtree(self.sim_dir)

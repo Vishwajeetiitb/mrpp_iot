@@ -26,7 +26,8 @@ from time import sleep
 import sys
 
 rospack = rospkg.RosPack()
-input_device_range  = int(sys.argv[1])
+input_device_range  = rospy.get_param('/iot_device_range')
+run_id = rospy.get_param('/run_id')
 
 class MRPP_IOT:
     def __init__(self, graph):
@@ -54,7 +55,7 @@ class MRPP_IOT:
         self.stamps = np.zeros(1) 
 
 
-        self.sim_dir = dirname + '/post_process/'+ graph_name + '/'+ self.algo_name + '_'+str(self.Iot_device_range)+'/' + str(self.num_bots) + '_agents'
+        self.sim_dir = dirname + '/post_process/'+ graph_name + '/run'+str(run_id) + '/'+ self.algo_name + '_'+str(self.Iot_device_range)+'/' + str(self.num_bots) + '_agents'
         if os.path.exists(self.sim_dir):
             shutil.rmtree(self.sim_dir)
             os.makedirs(self.sim_dir)
