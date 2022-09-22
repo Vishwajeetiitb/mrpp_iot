@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2022-09-17 10:33:44 by Eclipse SUMO netedit Version 1.14.1
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <sumo-net-file value="/home/vishwajeet/ddp_workspace/src/mrpp_iot/graph_sumo/iit_madras.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="/home/vishwajeet/ddp_workspace/src/mrpp_iot/graph_sumo/iit_madras.net.xml"/>
+    </output>
+
+    <processing>
+        <geometry.min-radius.fix.railways value="false"/>
+        <geometry.max-grade.fix value="false"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="false"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.corner-detail value="5"/>
+        <junctions.limit-turn-speed value="5.5"/>
+        <rectangular-lane-cut value="false"/>
+    </junctions>
+
+    <pedestrian>
+        <walkingareas value="false"/>
+    </pedestrian>
+
+</configuration>
+-->
+
+<nodes version="1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
+    <location netOffset="1045.62,1192.25" convBoundary="0.00,0.00,2092.35,2379.36" origBoundary="-1045.62,-1192.25,1046.73,1187.12" projParameter="!"/>
+
+    <node id="1515242053" x="1699.97" y="0.00" type="priority"/>
+    <node id="2164168433" x="1042.09" y="82.80" type="priority"/>
+    <node id="2164168455" x="1085.81" y="197.37" type="priority"/>
+    <node id="2166694724" x="1300.84" y="596.94" type="priority"/>
+    <node id="2166694752" x="1186.68" y="681.04" type="priority"/>
+    <node id="2166703022" x="1522.79" y="521.12" type="priority"/>
+    <node id="2167078769" x="1317.01" y="186.56" type="priority"/>
+    <node id="2167078770" x="1317.33" y="246.17" type="priority"/>
+    <node id="2167078771" x="1092.96" y="269.49" type="priority"/>
+    <node id="2167078772" x="1146.70" y="272.85" type="priority"/>
+    <node id="268789836" x="2092.35" y="2379.36" type="priority"/>
+    <node id="268789875" x="1353.13" y="961.43" type="priority"/>
+    <node id="268789877" x="1881.36" y="2127.79" type="priority"/>
+    <node id="268789882" x="1652.59" y="1584.93" type="priority"/>
+    <node id="268789942" x="1926.47" y="2145.13" type="priority"/>
+    <node id="268789950" x="1781.41" y="1537.70" type="priority"/>
+    <node id="268789954" x="1833.34" y="1447.50" type="priority"/>
+    <node id="268789959" x="2025.90" y="2319.38" type="priority"/>
+    <node id="268789961" x="1742.36" y="1602.12" type="priority"/>
+    <node id="268789969" x="1139.24" y="812.65" type="priority"/>
+    <node id="268789971" x="1161.86" y="805.55" type="priority"/>
+    <node id="268789973" x="1136.61" y="782.51" type="priority"/>
+    <node id="268789976" x="1118.11" y="790.79" type="priority"/>
+    <node id="268789999" x="1111.12" y="1052.16" type="priority"/>
+    <node id="268790000" x="1111.11" y="1024.47" type="priority"/>
+    <node id="268790010" x="943.93" y="738.03" type="priority"/>
+    <node id="275675441" x="1090.44" y="350.86" type="priority"/>
+    <node id="275676975" x="1100.18" y="206.31" type="priority"/>
+    <node id="275676979" x="1520.14" y="259.03" type="priority"/>
+    <node id="275676982" x="1678.00" y="261.03" type="priority"/>
+    <node id="3098974997" x="958.55" y="90.21" type="priority"/>
+    <node id="3248845375" x="2011.22" y="2180.08" type="priority"/>
+    <node id="330612289" x="1094.17" y="1027.73" type="priority"/>
+    <node id="330648048" x="476.59" y="654.99" type="priority"/>
+    <node id="330653353" x="1092.34" y="645.32" type="priority"/>
+    <node id="330653384" x="1523.85" y="567.08" type="priority"/>
+    <node id="330654038" x="1042.38" y="63.34" type="priority"/>
+    <node id="330654081" x="1402.53" y="100.96" type="priority"/>
+    <node id="330654083" x="1511.15" y="104.03" type="priority"/>
+    <node id="330654123" x="1599.02" y="258.84" type="priority"/>
+    <node id="330654139" x="1400.62" y="253.76" type="priority"/>
+    <node id="330780901" x="0.00" y="367.82" type="priority"/>
+    <node id="3371735080" x="1178.16" y="1009.94" type="priority"/>
+</nodes>

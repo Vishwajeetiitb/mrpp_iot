@@ -1,11 +1,12 @@
 use_sim_time: true
-gui: false
-graph: iitb_full
-init_bots: 2
-init_locations: '6568909595 6568909594'
+gui: true
+graph: iit_madras
+init_bots: 5
+init_locations: ''
 done: false
-sim_length: 3000
-random_string: 'test'
-algo_name: 'cr'
+sim_length: 30000
+random_string: 'test2'
+algo_name: 'iot_communication_network'
 no_of_deads: 0
 run_id: 0
+iot_device_range: 250

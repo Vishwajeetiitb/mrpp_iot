@@ -212,14 +212,15 @@ def voronoi_plot_2d_clip(vor, ax=None, **kw):
             c = Shapely_split(hull,b) 
             issue = True
             for poly in c.geoms:
-                if poly.contains(Shapely_point(point)) or poly.intersects(Shapely_point(point)):
+                if poly.contains(Shapely_point(point)) or poly.intersects(Shapely_point(point)) or Shapely_point(point).distance(poly) < 1e-12:
                     x,y = poly.exterior.coords.xy
                     Infinite_region = np.column_stack((x,y))[:-1,:]
                     issue = False
             if issue: 
                 print('Issue detected')
                 for poly in c.geoms:
-                    print(poly.contains(Shapely_point(point)),poly.intersects(Shapely_point(point)))
+                    print(poly)
+                    print(Shapely_point(point).distance(poly),Shapely_point(point).intersects(poly),poly.contains(Shapely_point(point)),poly.intersects(Shapely_point(point)))
                 for idx,d in enumerate(c.geoms):
                     x,y = d.exterior.coords.xy
                     ax.plot(x,y,'-k',color=color_list[idx+1],linewidth=4-idx)
@@ -296,8 +297,9 @@ def save_data():
             dist = ((data['x']-p[0])**2+(data['y']-p[1])**2)**0.5
             if dist <= radii[idx] : covered_nodes.append(node)
         
-        base_station_dic = {'location' : [p],'Radius': radii[idx], 'covered_nodes' : [covered_nodes], 'Total_nodes_covered' : len(covered_nodes)}
-        base_stations_df = pd.concat([base_stations_df,pd.DataFrame(base_station_dic,index=[idx])])        
+        if covered_nodes !=[]:
+            base_station_dic = {'location' : [p],'Radius': radii[idx], 'covered_nodes' : [covered_nodes], 'Total_nodes_covered' : len(covered_nodes)}
+            base_stations_df = pd.concat([base_stations_df,pd.DataFrame(base_station_dic,index=[idx])])        
 
     base_stations_df.to_csv(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations.csv')
     np.save(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations.npy',new_base_points)

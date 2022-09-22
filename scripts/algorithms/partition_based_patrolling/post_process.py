@@ -9,7 +9,7 @@ dir_name = rospkg.RosPack().get_path('mrpp_sumo')
 all_dir = [x[0] for x in os.walk(dir_name + '/post_process/')]
 for dir in all_dir:
     if os.path.exists(dir + '/data.npy'):
-        data_arr = np.load(dir + '/data.npy').astype('int32')
+        dṭata_arr = np.load(dir + '/data.npy').astype('int32')
         stamps = np.load(dir + '/stamps.npy').astype('int32')
         print(dir,data_arr.shape,stamps.shape)
         total_nodes = data_arr.shape[1]

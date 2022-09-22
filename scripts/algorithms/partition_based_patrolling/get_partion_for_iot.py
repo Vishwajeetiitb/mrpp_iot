@@ -4,8 +4,8 @@ import os
 import pickle
 import shutil
 import sys
-from copyreg import pickle
 from math import *
+import pickle5 as pickle
 
 import alphashape
 import networkx as nx
@@ -40,8 +40,9 @@ def get_boundary_hull(points):
 
 if __name__ == '__main__':
     dirname = rospkg.RosPack().get_path('mrpp_sumo')
-    Iot_device_ranges = [10000] # Ranges keep it in decreasing order
-    graph_name = 'iitb_full'
+    Iot_device_ranges = sorted([150,250,350,500],reverse=True)
+
+    graph_name = 'iit_delhi'
     graph_path = dirname +'/graph_ml/'+ graph_name + '.graphml'
     graph = nx.read_graphml(graph_path)
     graph_points = []
@@ -52,10 +53,8 @@ if __name__ == '__main__':
     graph_all_results_path = dirname +'/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/'
     if not os.path.exists(graph_all_results_path):
         os.makedirs(graph_all_results_path)
-    # initial_no_of_base_stations = max(3,int(hull.area/(pi*(Iot_device_range*Iot_device_range))))
-    # print(initial_no_of_base_stations)
-    # no_of_base_stations = initial_no_of_base_stations
-    no_of_base_stations = 1
+        
+    no_of_base_stations = 3
     rho_max = None
 
     for range in Iot_device_ranges:
