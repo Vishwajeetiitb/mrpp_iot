@@ -40,9 +40,9 @@ def get_boundary_hull(points):
 
 if __name__ == '__main__':
     dirname = rospkg.RosPack().get_path('mrpp_sumo')
-    Iot_device_ranges = sorted([150,250,350,500],reverse=True)
+    Iot_device_ranges = sorted([10000],reverse=True)
 
-    graph_name = 'iit_delhi'
+    graph_name = 'iit_bombay'
     graph_path = dirname +'/graph_ml/'+ graph_name + '.graphml'
     graph = nx.read_graphml(graph_path)
     graph_points = []
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     if not os.path.exists(graph_all_results_path):
         os.makedirs(graph_all_results_path)
         
-    no_of_base_stations = 3
+    no_of_base_stations = 1
     rho_max = None
 
     for range in Iot_device_ranges:

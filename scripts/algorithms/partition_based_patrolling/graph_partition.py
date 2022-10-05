@@ -170,7 +170,22 @@ def voronoi_plot_2d_clip(vor, ax=None, **kw):
             finite_region_points_indices = vor.regions[finite_region_index]
             finite_region = vor.vertices[finite_region_points_indices]
             b = Shapely_polygon(finite_region.tolist())
-            x,y = hull.intersection(b).exterior.coords.xy
+            # print(hull.intersection(b))
+            i_poly = hull.intersection(b)
+            if i_poly.geom_type == 'MultiPolygon':
+                # fig2, ax2 = plt.subplots()
+                # print(i_poly)
+                # x,y =  b.exterior.xy
+                # ax2.plot(x,y)
+                # x,y = hull.exterior.xy
+                # ax2.plot(x,y)
+                # for p in i_poly:
+                #     x,y = p.exterior.xy
+                #     ax2.plot(x,y)
+                # plt.show()
+                i_poly = i_poly[0   ]
+
+            x,y = i_poly.exterior.coords.xy
             finite_region = np.column_stack((x,y))[:-1,:]
             final_regions.append(finite_region)
 

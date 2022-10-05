@@ -13,32 +13,30 @@ import os
 import urllib.parse
 
 graph_name = 'iit_madras'
-range = 150
+range = 10000
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 # no_of_base_stations = np.load(dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/required_no_of_base_stations.npy')[0]
 graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
 
 G = nx.read_graphml(dirname + '/graph_ml/' + graph_name + '.graphml')
-tree = ET.parse(dirname + '/graph_sumo/' + graph_name +".net.xml")
-root = tree.getroot()
-
 
 ## Edges of the graph
 edge_x = []
 edge_y = []
-for child in root:
-    if child.tag == 'edge':
-        shape = child[0].attrib['shape'].split()
-        for point in shape:
-            point = pd.eval(point)
-            edge_x.append(point[0])
-            edge_y.append(point[1])
-        edge_x.append(None)
-        edge_y.append(None)
+
+
+for e in G.edges():
+    shape = G[e[0]][e[1]]['shape'].split()
+    for point in shape:
+        point = pd.eval(point)
+        edge_x.append(point[0])
+        edge_y.append(point[1])
+    edge_x.append(None)
+    edge_y.append(None)
 
 edge_trace = go.Scatter(
     x=edge_x, y=edge_y,
-    line=dict(width=1, color='black'),
+    line=dict(width=1.5, color='black'),
     hoverinfo='none',
     mode='lines')
 

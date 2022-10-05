@@ -14,10 +14,10 @@ start_time  = datetime.now()
 
 no_of_bots = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 algos = ['iot_communication_network','cr']
-graphs = ['iitb_full']
+graphs = ['iit_bombay','iit_delhi','iit_madras']
 iot_device_ranges = [150,250,350,500,10000]
 dir_name = rospkg.RosPack().get_path('mrpp_sumo')
-no_of_runs = 4
+no_of_runs = 1
 
 # rospy.init_node('config_simulate')
 for graph_name in graphs:

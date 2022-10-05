@@ -53,6 +53,7 @@ class MRPP_IOT:
         self.data_arr = np.zeros([1,self.total_nodes])
         self.global_idle = np.zeros(self.total_nodes)
         self.stamps = np.zeros(1) 
+        self.agents_masterdata = np.zeros([1,self.num_bots,self.total_nodes])
 
 
         self.sim_dir = dirname + '/post_process/'+ graph_name + '/run'+str(run_id) + '/'+ self.algo_name + '_'+str(self.Iot_device_range)+'/' + str(self.num_bots) + '_agents'
@@ -125,6 +126,7 @@ class MRPP_IOT:
             ## Monitoring and saving data for graph    
             self.stamps = np.append(self.stamps,self.stamp)
             self.data_arr = np.append(self.data_arr,[self.global_idle],axis=0)
+            self.agents_masterdata = np.append(self.agents_masterdata,[self.agents_arr],axis=0)
             
     
     def callback_next_task(self, req):
@@ -173,7 +175,9 @@ class MRPP_IOT:
         print("Saving data")
         np.save(self.sim_dir+"/data.npy",self.data_arr)
         np.save(self.sim_dir+"/stamps.npy",self.stamps)
+        np.save(self.sim_dir+"/agents_masterdata.npy",self.agents_masterdata)
         np.save(self.sim_dir+"/nodes.npy",np.array(self.nodes))
+        
         print("Data saved!")
 
 
