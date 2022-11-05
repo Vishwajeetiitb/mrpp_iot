@@ -1,5 +1,5 @@
 use_sim_time: true
-gui: true
+gui: false
 graph: iit_bombay
 init_bots: 8
 init_locations: ''

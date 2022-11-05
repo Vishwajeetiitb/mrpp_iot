@@ -1,4 +1,4 @@
-from turtle import width
+from turtle import title, width
 from typing import Dict
 import plotly.graph_objects as go
 import rospkg
@@ -11,12 +11,13 @@ from PIL import Image
 from plotly.subplots import make_subplots
 import os
 import urllib.parse
+import plotly.io as pio
 
 
 graph_name = 'iitb_full'
-algo_list = ['iot_communication_network_250','iot_communication_network_350','iot_communication_network_500']
-row_size = 1
-col_size = 4
+algo_list = ['iot_communication_network_150','iot_communication_network_250','iot_communication_network_350','iot_communication_network_500','iot_communication_network_10000']
+row_size = 2
+col_size = 3
 no_agents = 9
 steady_time_stamp = 3000
 
@@ -75,7 +76,7 @@ node_trace = go.Scatter(
         reversescale=True,
         coloraxis = "coloraxis",
         color=[],
-        size=8,
+        size=3,
         colorbar=dict(
             thickness=15,
             title='Avg node Idleness (post steady state) ',
@@ -115,15 +116,15 @@ def get_base_station_shape(algo):
     return base_stations,icons
 
 ###################################################################### Subplots ####################################################################################
-
-fig = make_subplots(rows=row_size, cols=col_size,subplot_titles=[i for i in algo_list])
-fig.update_layout(title='Average Node Idleness Network Plot for ' + str(no_agents) + ' Agents' ,
+# title='Average Node Idleness Network Plot for ' + str(no_agents) + ' Agents'
+fig = make_subplots(rows=row_size, cols=col_size,subplot_titles=[i for i in algo_list],vertical_spacing=0.1)
+fig.update_layout(title='Graph simulation scenearios' ,
                 titlefont_size=16,
                 title_x=0.5,
                 coloraxis = {'colorscale':'Jet'},
+                
                 )
-fig.update_yaxes(scaleanchor = "x",scaleratio = 1)
-fig.update_xaxes(scaleanchor = "y",scaleratio = 1)
+
 for m,algo_name in enumerate(algo_list):
     idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data_final.npy")
     stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps_final.npy")
@@ -140,7 +141,7 @@ for m,algo_name in enumerate(algo_list):
     node_trace.showlegend = False
     edge_trace.showlegend = False
     fig.add_trace(edge_trace,row=int(m/col_size)+1,col=m%col_size+1)
-    fig.add_trace(node_trace,row=int(m/col_size)+1,col=m%col_size+1)
+    fig.add_trace(node_trace,row=int(m/col_size)+1,col=m%col_size+1,)
 
     if 'iot' in algo_name:
         base_station_shape,icons = get_base_station_shape(algo_name)
@@ -201,4 +202,18 @@ if not os.path.exists(plot_dir):
 fig.write_html(plot_dir+file_name)
 
 print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_based_patrolling/plot/"+ graph_name + '/network_plot/' + urllib.parse.quote(file_name))
+# fig.update_yaxes(range = [1,1])
+# fig.update_layout(axis)
+
+# fig.update_layout(yaxis1 = dict(range=[0, 2000]))
+# fig.update_layout(yaxis2 = dict(range=[0, 2000]))
+# fig.update_layout(yaxis3 = dict(range=[0, 2000]))
+# fig.update_layout(yaxis4 = dict(range=[0, 2000]))
+# fig.update_layout(yaxis5 = dict(range=[0, 2000]))
+# fig['layout'].update(height=600, width=600, title='Stacked Subplots with Shared X-Axes')
+# fig['layout'].update(height=2000, width=2000, title='Subplots with Shared X-Axes')
+
+fig.update_xaxes(scaleanchor = "y",scaleratio = 1)
+fig.update_yaxes(scaleanchor = "x",scaleratio = 1)
+fig.write_image("./fig1.jpg",width = 3840, height = 2160)
 fig.show()

@@ -19,7 +19,7 @@ available_comparisons = ['avg_idleness', 'worst_idleness']
 
 
 stamp_as_points = True
-comparison_parameter_index = 1
+comparison_parameter_index = 0
 
 # fig = go.Figure(layout=go.Layout(
 #                 title=graph_name +' Average node Idleness distribution',

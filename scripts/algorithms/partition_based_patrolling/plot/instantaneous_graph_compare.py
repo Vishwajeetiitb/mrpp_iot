@@ -15,7 +15,7 @@ from plotly.offline import iplot
 
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 no_agents_list = [1,3,5,7,9,11]
-algo_list = ['iot_communication_network_150','iot_communication_network_250','iot_communication_network_350','iot_communication_network_500','iot_communication_network_10000','cr']
+algo_list = ['iot_communication_network_150','iot_communication_network_250','iot_communication_network_350','iot_communication_network_500','iot_communication_network_10000']
 available_comparisons = ['Idleness', 'Worst Idleness']
 comparison_parameter_index = 0
 scater_nodes_algo_index =  2# putting scatter for only one algo is better otherwise mess put -1 if don't require node scatter
