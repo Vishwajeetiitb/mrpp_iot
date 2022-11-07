@@ -15,6 +15,7 @@ import networkx as nx
 from mrpp_sumo.srv import NextTaskBot, NextTaskBotResponse
 from mrpp_sumo.srv import AlgoReady, AlgoReadyResponse
 from mrpp_sumo.msg import AtNode 
+from numba import jit, cuda
 
 import random as rn
 import pandas as pd
@@ -65,7 +66,6 @@ class MRPP_IOT:
             
         rospy.Service('algo_ready', AlgoReady, self.callback_ready)
         self.ready = True
-
 
     def callback_idle(self, data):
         if self.stamp < data.stamp and not done:
@@ -128,7 +128,6 @@ class MRPP_IOT:
             self.data_arr = np.append(self.data_arr,[self.global_idle],axis=0)
             self.agents_masterdata = np.append(self.agents_masterdata,[self.agents_arr],axis=0)
             
-    
     def callback_next_task(self, req):
         node = req.node_done
         t = req.stamp
@@ -170,7 +169,8 @@ class MRPP_IOT:
             return AlgoReadyResponse(True)
         else:
             return AlgoReadyResponse(False)
-    
+
+    @jit(target_backend='cuda')	
     def save_data(self):
         print("Saving data")
         np.save(self.sim_dir+"/data.npy",self.data_arr)

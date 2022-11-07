@@ -1,7 +1,7 @@
 use_sim_time: true
 gui: false
-graph: iit_bombay
-init_bots: 8
+graph: iit_madras
+init_bots: 1
 init_locations: ''
 done: false
 sim_length: 30000
