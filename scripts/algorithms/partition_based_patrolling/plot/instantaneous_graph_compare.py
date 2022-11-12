@@ -14,14 +14,14 @@ import chart_studio.plotly as py
 from plotly.offline import iplot
 
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
-no_agents_list = [1,3,5,7,9,11]
+no_agents_list = [3,6,8,10,12,15]
 algo_list = ['iot_communication_network_150','iot_communication_network_250','iot_communication_network_350','iot_communication_network_500','iot_communication_network_10000']
 available_comparisons = ['Idleness', 'Worst Idleness']
 comparison_parameter_index = 0
 scater_nodes_algo_index =  2# putting scatter for only one algo is better otherwise mess put -1 if don't require node scatter
 row_size = 2
 col_size = 3
-graph_name = 'iitb_full'
+graph_name = 'iit_delhi'
 color_list = [
     '#1f77b4',  # muted blue
     '#ff7f0e',  # safety orange
@@ -42,8 +42,8 @@ for idx,no_agents in enumerate(no_agents_list):
     
     for m,algo_name in enumerate(algo_list):
         df = pd.DataFrame()
-        idle = np.load(dirname+ "/post_process/"  + graph_name+ "/"+ algo_name + "/" + str(no_agents)+ "_agents/data_final.npy")
-        stamps = np.load(dirname+ "/post_process/" + graph_name+ "/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps_final.npy")
+        idle = np.load(dirname+ "/post_process/"  + graph_name+ "/run0/"+ algo_name + "/" + str(no_agents)+ "_agents/data_final.npz")['arr_0']
+        stamps = np.load(dirname+ "/post_process/" + graph_name+ "/run0/"+ algo_name + "/"  + str(no_agents)+ "_agents/stamps_final.npz")['arr_0']
         
         if comparison_parameter_index == 0 : 
             # val = np.average(idle,axis=1)
@@ -85,7 +85,7 @@ for idx,no_agents in enumerate(no_agents_list):
     fig['layout']['xaxis'+str(idx+1)]['title']='Stamps'
     fig['layout']['yaxis'+str(idx+1)]['title']='Instantaneous Graph ' + available_comparisons[comparison_parameter_index]
 
-fig.update_layout(title='Instantaneous Graph '+ available_comparisons[comparison_parameter_index]+ ' Plot',title_x=0.5)
+fig.update_layout(title='Instantaneous Graph '+ available_comparisons[comparison_parameter_index]+ ' Plot for ' + graph_name,title_x=0.5)
 
 
 file_name = ""
