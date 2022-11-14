@@ -14,7 +14,7 @@ start_time  = datetime.now()
 
 no_of_bots = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 algos = ['iot_communication_network']
-graphs = ['iit_madras']
+graphs = ['iit_bombay']
 iot_device_ranges = [150,250,350,500,10000]
 dir_name = rospkg.RosPack().get_path('mrpp_sumo')
 no_of_runs = 1
