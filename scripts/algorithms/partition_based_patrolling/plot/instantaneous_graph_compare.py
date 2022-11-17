@@ -21,7 +21,7 @@ comparison_parameter_index = 0
 scater_nodes_algo_index =  2# putting scatter for only one algo is better otherwise mess put -1 if don't require node scatter
 row_size = 2
 col_size = 3
-graph_name = 'iit_delhi'
+graph_name = 'iit_madras'
 color_list = [
     '#1f77b4',  # muted blue
     '#ff7f0e',  # safety orange

@@ -1,4 +1,3 @@
-import imp
 from turtle import width
 import plotly.graph_objects as go
 import rospy
@@ -8,7 +7,6 @@ import xml.etree.ElementTree as ET
 from ast import literal_eval
 import pandas as pd
 import numpy as np
-from PIL import Imageimport imp
 from turtle import width
 import plotly.graph_objects as go
 import rospy
@@ -23,16 +21,7 @@ import os
 import urllib.parse
 
 graph_name = 'iit_delhi'
-range = 10000
-dirname = rospkg.RosPack().get_path('mrpp_sumo')
-# no_of_base_stations = np.load(dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/required_no_of_base_stations.npy')[0]
-graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
-
-import os
-import urllib.parse
-
-graph_name = 'iit_delhi'
-range = 10000
+range = 150
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 # no_of_base_stations = np.load(dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/required_no_of_base_stations.npy')[0]
 graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
@@ -53,44 +42,12 @@ for e in G.edges():
     edge_x.append(None)
     edge_y.append(None)
 
-edge_trace = go.Scatter(
-    x=edge_x, y=edge_y,
-    line=dict(width=1.5, color='black'),
-    hoverinfo='none',
-    mode='lines')
-
 ## Nodes of the graph
 node_x = []
 node_y = []
 for node in G.nodes():
     node_x.append(G.nodes[node]['x'])
     node_y.append(G.nodes[node]['y'])
-
-# G = nx.read_graphml(dirname + '/graph_ml/' + graph_name + '.graphml')
-# tree = ET.parse(dirname + '/graph_sumo/' + graph_name +".net.xml")
-# root = tree.getroot()
-
-# ## Edges of the graph
-# edge_x = []
-# edge_y = []
-# for child in root:
-#     if child.tag == 'edge':
-#         shape = child[0].attrib['shape'].split()
-#         for point in shape:
-#             point = pd.eval(point)
-#             edge_x.append(point[0])
-#             edge_y.append(point[1])
-#         edge_x.append(None)
-#         edge_y.append(None)
-
-# ## Nodes of the graph
-# node_x = []
-# node_y = []
-# for node in G.nodes():
-#     node_x.append(G.nodes[node]['x'])
-#     node_y.append(G.nodes[node]['y'])
-
-
 
 edge_trace = go.Scatter(
     x=edge_x, y=edge_y,
@@ -160,7 +117,6 @@ base_station_logo = Image.open(dirname + '/scripts/algorithms/partition_based_pa
 
 base_stations = []
 icons = []
-print(base_stations_df.shape[0])
 for idx, base_station in base_stations_df.iterrows():
     radius = base_station['Radius']
     location = base_station['location']
