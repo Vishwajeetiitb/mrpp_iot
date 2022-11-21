@@ -32,7 +32,6 @@ G = nx.read_graphml(dirname + '/graph_ml/' + graph_name + '.graphml')
 edge_x = []
 edge_y = []
 
-
 for e in G.edges():
     shape = G[e[0]][e[1]]['shape'].split()
     for point in shape:
@@ -55,8 +54,6 @@ edge_trace = go.Scatter(
     hoverinfo='none',
     mode='lines')
 
-
-
 node_trace = go.Scatter(
     x=node_x, y=node_y,
     mode='markers',
@@ -78,8 +75,6 @@ node_trace = go.Scatter(
             titleside='right'
         ),
         line_width=2))
-
-
 
 node_adjacencies = []
 node_text = []

@@ -23,7 +23,7 @@ from plotly.subplots import make_subplots
 import plotly.express as px
 import plotly.figure_factory as ff
 
-graph_names = ['iit_madras','iit_delhi','complex_final']
+graph_names = ['iit_madras','iit_delhi','iit_bombay']
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 # no_of_base_stations = np.load(dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/required_no_of_base_stations.npy')[0]
 graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
@@ -40,7 +40,7 @@ color_list = [
     '#17becf'   # blue-teal
 ]
 
-fig = make_subplots(rows=3, cols=2,subplot_titles=['Node Degree Distribution','Edge length distribution'])
+fig = make_subplots(rows=3, cols=2,subplot_titles=[['Node Degree Distribution For','Edge length distribution']],horizontal_spacing = 0.05,vertical_spacing=0.05)
 fig.update_layout(title='Map Geometry Distribution',title_x=0.5)
 
 edge_dist_data = []
