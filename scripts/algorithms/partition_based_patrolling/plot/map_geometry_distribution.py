@@ -23,7 +23,7 @@ from plotly.subplots import make_subplots
 import plotly.express as px
 import plotly.figure_factory as ff
 
-graph_names = ['iit_madras','iit_delhi','iit_bombay']
+graph_names = ['iit_delhi','stanford','iit_bombay']
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 # no_of_base_stations = np.load(dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/required_no_of_base_stations.npy')[0]
 graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
@@ -40,7 +40,11 @@ color_list = [
     '#17becf'   # blue-teal
 ]
 
-fig = make_subplots(rows=3, cols=2,subplot_titles=[['Node Degree Distribution For','Edge length distribution']],horizontal_spacing = 0.05,vertical_spacing=0.05)
+# for i in graph_names:
+#     for j in []: print(j+i)
+
+subplot_names = [j+i for i in graph_names for j in ['Node Degree Distribution for ','Edge length distribution for ']]
+fig = make_subplots(rows=3, cols=2,subplot_titles=subplot_names,horizontal_spacing = 0.05,vertical_spacing=0.05)
 fig.update_layout(title='Map Geometry Distribution',title_x=0.5)
 
 edge_dist_data = []
@@ -76,10 +80,10 @@ for idx,graph_name in enumerate(graph_names):
     node_dist_data.append(node_adjacencies)
     fig2 = ff.create_distplot([edge_lengths],[graph_name],show_hist=False,show_rug=False)
 
-    fig.add_trace(go.Scatter(fig2['data'][0],legendgroup=idx,marker_color=color_list[idx]), row=idx+1, col=2)
+    fig.add_trace(go.Scatter(fig2['data'][0],legendgroup=idx,marker_color=color_list[idx],showlegend=False), row=idx+1, col=2)
     fig2 = ff.create_distplot([node_adjacencies],[graph_name],show_hist=False,show_rug=False)
     fig.add_trace(go.Scatter(fig2['data'][0],legendgroup=idx,showlegend=False,marker_color=color_list[idx]), row=idx+1, col=1)
 
-fig.update_layout(xaxis2 = dict(range=[0, 900]),xaxis4 = dict(range=[0, 900]),xaxis6 = dict(range=[0, 900])) 
+fig.update_layout(xaxis2 = dict(range=[0, 600]),xaxis4 = dict(range=[0, 600]),xaxis6 = dict(range=[0, 600])) 
 fig.update_layout(xaxis1 = dict(range=[0.9, 5.1]),xaxis3 = dict(range=[0.9, 5.1]),xaxis5 = dict(range=[0.9, 5.1])) 
 fig.show()

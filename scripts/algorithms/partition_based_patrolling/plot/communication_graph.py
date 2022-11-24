@@ -20,8 +20,8 @@ from PIL import Image
 import os
 import urllib.parse
 
-graph_name = 'iit_delhi'
-range = 150
+graph_name = 'stanford'
+range = 250
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 # no_of_base_stations = np.load(dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/required_no_of_base_stations.npy')[0]
 graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
@@ -106,7 +106,7 @@ fig = go.Figure(data=[edge_trace, node_trace],
                 yaxis=dict(scaleanchor="x", scaleratio=1))
                 )
 
-## Base stations 
+# Base stations 
 base_stations_df = pd.read_csv(graph_results_path + graph_name + '/' + str(range) + '_range_base_stations.csv',converters={'location': pd.eval,'Radius': pd.eval})
 base_station_logo = Image.open(dirname + '/scripts/algorithms/partition_based_patrolling/plot/base.png')
 
