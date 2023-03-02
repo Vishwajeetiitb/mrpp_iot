@@ -283,8 +283,8 @@ def base_station_initial_points(boundary_poly,n):
             random_y = np.random.uniform( miny, maxy, 1 )[0]
             is_inside = boundary_poly.contains(Shapely_point([random_x,random_y]))
         base_station_points.append([random_x,random_y])
-    return select_random_points_on_edges(graph_name,n)
-    # return base_station_points
+    # return select_random_points_on_edges(graph_name,n)
+    return base_station_points
 
 def get_boundary_hull(points):
     global hull, hull_points, hull_poly
