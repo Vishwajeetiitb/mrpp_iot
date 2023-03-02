@@ -29,6 +29,7 @@ import alphashape
 import pickle
 from initial_points_on_graph import select_random_points_on_edges
 
+
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 
 
@@ -269,7 +270,7 @@ def voronoi_plot_2d_clip(vor, ax=None, **kw):
 
 
 def base_station_initial_points(boundary_poly,n):
-
+    global graph_name
     minx, miny, maxx, maxy = boundary_poly.bounds
 
     random_x = None
@@ -282,8 +283,8 @@ def base_station_initial_points(boundary_poly,n):
             random_y = np.random.uniform( miny, maxy, 1 )[0]
             is_inside = boundary_poly.contains(Shapely_point([random_x,random_y]))
         base_station_points.append([random_x,random_y])
-    return base_station_points
-
+    return select_random_points_on_edges(graph_name,n)
+    # return base_station_points
 
 def get_boundary_hull(points):
     global hull, hull_points, hull_poly

@@ -20,8 +20,8 @@ from PIL import Image
 import os
 import urllib.parse
 
-graph_name = 'parliament'
-range = 500
+graph_name = 'iit_bombay'
+range = 450
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 # no_of_base_stations = np.load(dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/required_no_of_base_stations.npy')[0]
 graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
