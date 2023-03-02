@@ -33,7 +33,7 @@ G = nx.read_graphml(dirname + '/graph_ml/' + graph_name + '.graphml')
 tree = ET.parse(dirname + '/graph_sumo/' + graph_name +".net.xml")
 root = tree.getroot()
 
-## Edges of the graph
+# Edges of the graph
 edge_x = []
 edge_y = []
 for child in root:
