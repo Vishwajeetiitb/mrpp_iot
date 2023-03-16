@@ -43,6 +43,16 @@ no_of_base_stations = int(sys.argv[2])
 graph_path = dirname +'/graph_ml/'+ graph_name + '.graphml'
 graph_results_path = dirname +'/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/' + str(no_of_base_stations) + '_base_stations/'
 graph = nx.read_graphml(graph_path)
+all_edge_segments = []
+for e in graph.edges():
+    edge = graph[e[0]][e[1]]['shape'].split()
+    points = np.array([p.split(',') for p in edge], dtype=float).tolist()
+    for i in range(len(points)-1):
+        if points[i][0] != points[i+1][0]:
+            all_edge_segments.append((points[i], points[i+1]))
+
+
+
 if os.path.exists(graph_results_path):
     shutil.rmtree(graph_results_path)
     os.makedirs(graph_results_path)
@@ -283,8 +293,28 @@ def base_station_initial_points(boundary_poly,n):
             random_y = np.random.uniform( miny, maxy, 1 )[0]
             is_inside = boundary_poly.contains(Shapely_point([random_x,random_y]))
         base_station_points.append([random_x,random_y])
-    # return select_random_points_on_edges(graph_name,n)
-    return base_station_points
+    return select_random_points_on_edges(graph_name,n)
+    # return base_station_points
+
+def closest_point_on_edge(x, y):
+    global all_edge_segments
+    x, y = np.array([x, y])
+    line_segments = np.array(all_edge_segments)
+
+    # Calculate the distances from the point to each line segment
+    x1, y1 = line_segments[:, 0, 0], line_segments[:, 0, 1]
+    x2, y2 = line_segments[:, 1, 0], line_segments[:, 1, 1]
+    dx, dy = x2 - x1, y2 - y1
+    t = ((x - x1) * dx + (y - y1) * dy) / (dx * dx + dy * dy)
+    t = np.clip(t, 0, 1)
+    closest = np.column_stack([x1 + t * dx, y1 + t * dy])
+    dists = np.sqrt(np.sum((closest - [x, y]) ** 2, axis=1))
+
+    # Find the index of the closest line segment
+    idx = np.argmin(dists)
+
+    return closest[idx].tolist()
+
 
 def get_boundary_hull(points):
     global hull, hull_points, hull_poly
@@ -292,6 +322,7 @@ def get_boundary_hull(points):
     if os.path.exists(hull_path):
         with open(hull_path, "rb") as poly_file:
             hull = pickle.load(poly_file)
+            hull = hull.buffer(100)
     else:    
 
         # hull = ConvexHull(initial_points)
@@ -370,7 +401,8 @@ while True:
         # print(region)
         region_poly = Shapely_polygon(region)
         if region_poly.contains(Shapely_point([c_x,c_y])):
-            new_base_points.append([c_x,c_y])
+
+            new_base_points.append(closest_point_on_edge(c_x,c_y))
             # print('c',[c_x,c_y])
         else:
             # p = previous_base_points[idx]

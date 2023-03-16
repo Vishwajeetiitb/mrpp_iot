@@ -40,9 +40,9 @@ def get_boundary_hull(points):
 
 if __name__ == '__main__':
     dirname = rospkg.RosPack().get_path('mrpp_sumo')
-    Iot_device_ranges = sorted([330],reverse=True)
+    Iot_device_ranges = sorted([500],reverse=True)
 
-    graph_name = 'iit_bombay'
+    graph_name = 'iit_madras'
     graph_path = dirname +'/graph_ml/'+ graph_name + '.graphml'
     graph = nx.read_graphml(graph_path)
     graph_points = []
@@ -61,13 +61,13 @@ if __name__ == '__main__':
     if not os.path.exists(graph_all_results_path):
         os.makedirs(graph_all_results_path)
         
-    no_of_base_stations = 5
+    no_of_base_stations = 3
     rho_max = None
 
     for range in Iot_device_ranges:
         
-        while True:
-            print('python3 ' + dirname +'/scripts/algorithms/partition_based_patrolling/graph_partition.py '+ graph_name + ' ' + str(no_of_base_stations))
+        while True: 
+            print('python3 ' + dirname +'/scripts/algorithms/partition_based_patrolling/graph_partition2.py '+ graph_name + ' ' + str(no_of_base_stations))
             os.system('python3 ' + dirname +'/scripts/algorithms/partition_based_patrolling/graph_partition2.py '+ graph_name + ' ' + str(no_of_base_stations))
             graph_results_path = dirname +'/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/' + str(no_of_base_stations) + '_base_stations/'
             base_stations_df   = pd.read_csv(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations.csv',converters={'location': pd.eval,'Radius': pd.eval})
@@ -76,3 +76,5 @@ if __name__ == '__main__':
                 base_stations_df.to_csv(dirname +'/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/' + str(range) + '_range_base_stations.csv')
                 break
             no_of_base_stations +=1
+
+    print(no_of_base_stations, "Base stations Deployed")

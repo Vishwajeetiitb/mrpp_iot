@@ -19,16 +19,17 @@ import numpy as np
 from PIL import Image
 import os
 import urllib.parse
+import pickle
 
-graph_name = 'iit_bombay'
-range = 330
+graph_name = 'iit_madras'
+range = 500
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 # no_of_base_stations = np.load(dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/required_no_of_base_stations.npy')[0]
 graph_results_path = dirname + '/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'
 
 G = nx.read_graphml(dirname + '/graph_ml/' + graph_name + '.graphml')
 
-## Edges of the graph
+## Edges of the m
 edge_x = []
 edge_y = []
 
@@ -86,11 +87,22 @@ node_trace.marker.color = node_adjacencies
 node_trace.text = node_text
 
 
-
-
+hull_path = dirname+'/graph_ml/'+graph_name+'_hull'
+if os.path.exists(hull_path):
+    with open(hull_path, "rb") as poly_file:
+        hull = pickle.load(poly_file)
+hull =hull.buffer(50)
+hull_x,hull_y = hull.exterior.coords.xy
+hull_x = hull_x.tolist()
+hull_y = hull_y.tolist()
+hull_trace = go.Scatter(
+    x=hull_x, y=hull_y,
+    line=dict(width=2, color='grey'),
+    hoverinfo='none',
+    mode='lines')
 ## Plot all data
 
-fig = go.Figure(data=[edge_trace, node_trace],
+fig = go.Figure(data=[edge_trace, node_trace,hull_trace],
              layout=go.Layout(
                 title=graph_name +' Communication Graph with '+ str(range) +'m Range IoT devices',
                 title_x = 0.5,
@@ -108,7 +120,7 @@ fig = go.Figure(data=[edge_trace, node_trace],
 
 # Base stations 
 base_stations_df = pd.read_csv(graph_results_path + graph_name + '/' + str(range) + '_range_base_stations.csv',converters={'location': pd.eval,'Radius': pd.eval})
-base_station_logo = Image.open(dirname + '/scripts/algorithms/partition_based_patrolling/plot/base.png')
+base_station_logo = Image.open(dirname + '/scripts/algorithms/partition_based_patrolling/plot/cross.png')
 
 base_stations = []
 icons = []
@@ -126,10 +138,10 @@ for idx, base_station in base_stations_df.iterrows():
             source=base_station_logo,
             xref="x",
             yref="y",
-            x=location[0]-radius/10,
-            y=location[1]+radius/10,
-            sizex = radius/5,
-            sizey = radius/5
+            x=location[0]-radius/16,
+            y=location[1]+radius/16,
+            sizex = radius/8,
+            sizey = radius/8
         ))
 
 fig.update_layout(shapes=base_stations, images=icons)
@@ -148,3 +160,5 @@ print("http://vishwajeetiitb.github.io/mrpp_iot//scripts/algorithms/partition_ba
 
 
 fig.show()
+
+
