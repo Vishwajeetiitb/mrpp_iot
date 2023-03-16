@@ -347,8 +347,8 @@ def save_data():
             base_station_dic = {'location' : [p],'Radius': radii[idx], 'covered_nodes' : [covered_nodes], 'Total_nodes_covered' : len(covered_nodes)}
             base_stations_df = pd.concat([base_stations_df,pd.DataFrame(base_station_dic,index=[idx])])        
 
-    base_stations_df.to_csv(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations.csv')
-    np.save(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations.npy',new_base_points)
+    base_stations_df.to_csv(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations_edge.csv')
+    np.save(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations_edge.npy',new_base_points)
 
 
 

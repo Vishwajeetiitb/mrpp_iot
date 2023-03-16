@@ -184,7 +184,7 @@ def voronoi_plot_2d_clip(vor, ax=None, **kw):
                 #     x,y = p.exterior.xy
                 #     ax2.plot(x,y)
                 # plt.show()
-                i_poly = i_poly[0   ]
+                i_poly = i_poly.geoms[0]
 
             x,y = i_poly.exterior.coords.xy
             finite_region = np.column_stack((x,y))[:-1,:]
@@ -389,7 +389,7 @@ while True:
     sd = statistics.stdev(x_axis)
     b= datetime.datetime.now()
     c= b-a
-    print(graph_name ,'Iteration',i,'rho_new:',rho_new,' rho_old:',rho_old, '#Base stations:',len(starting_base_points),'Iteration time(secs):',c.seconds)
+    # print(graph_name ,'Iteration',i,'rho_new:',rho_new,' rho_old:',rho_old, '#Base stations:',len(starting_base_points),'Iteration time(secs):',c.seconds)
     plt.gca().set_aspect('equal', adjustable='box')
 
     
