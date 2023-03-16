@@ -40,7 +40,7 @@ def get_boundary_hull(points):
 
 if __name__ == '__main__':
     dirname = rospkg.RosPack().get_path('mrpp_sumo')
-    Iot_device_ranges = sorted([500],reverse=True)
+    Iot_device_ranges = sorted([300],reverse=True)
 
     graph_name = 'iit_madras'
     graph_path = dirname +'/graph_ml/'+ graph_name + '.graphml'
