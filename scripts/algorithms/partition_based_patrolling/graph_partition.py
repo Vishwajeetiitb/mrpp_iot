@@ -28,6 +28,7 @@ import rospkg
 import alphashape
 import pickle
 from initial_points_on_graph import select_random_points_on_edges
+from grid_based_initial_points import get_initial_pose_list
 
 dirname = rospkg.RosPack().get_path('mrpp_sumo')
 
@@ -37,7 +38,7 @@ dirname = rospkg.RosPack().get_path('mrpp_sumo')
 
 graph_name = sys.argv[1]
 no_of_base_stations = int(sys.argv[2])
-
+communication_range = int(sys.argv[3])
 
 graph_path = dirname +'/graph_ml/'+ graph_name + '.graphml'
 graph_results_path = dirname +'/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/' + str(no_of_base_stations) + '_base_stations/'
@@ -282,8 +283,10 @@ def base_station_initial_points(boundary_poly,n):
             random_y = np.random.uniform( miny, maxy, 1 )[0]
             is_inside = boundary_poly.contains(Shapely_point([random_x,random_y]))
         base_station_points.append([random_x,random_y])
-    return base_station_points
-
+    
+    
+    return get_initial_pose_list(hull,communication_range,n)
+    # return base_station_points
 
 def get_boundary_hull(points):
     global hull, hull_points, hull_poly
@@ -291,7 +294,6 @@ def get_boundary_hull(points):
     if os.path.exists(hull_path):
         with open(hull_path, "rb") as poly_file:
             hull = pickle.load(poly_file)
-            hull = hull.buffer(100)
     else:    
 
         # hull = ConvexHull(initial_points)
@@ -395,7 +397,7 @@ while True:
     
     i+=1
     if rho_new is not None and rho_old is not None:
-        if abs(rho_new-rho_old)/max(rho_new,rho_old) < 0.001:
+        if abs(rho_new-rho_old)/max(rho_new,rho_old) < 0.005:
             for node,data in graph.nodes(data=True):
                 plt_ax.plot(data['x'],data['y'],'*',color='#FFD433') 
             plt.savefig(graph_results_path+'partition_stage.png')

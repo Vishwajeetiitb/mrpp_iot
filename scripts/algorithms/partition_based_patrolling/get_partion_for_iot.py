@@ -28,8 +28,7 @@ def get_boundary_hull(points):
     else:    
 
         # hull = ConvexHull(initial_points)
-        hull =alphashape.alphashape(points)
-    
+        hull = alphashape.alphashape(points).buffer(100)
         with open(hull_path, "wb") as poly_file:
             pickle.dump(hull, poly_file, pickle.HIGHEST_PROTOCOL)
 
@@ -40,9 +39,9 @@ def get_boundary_hull(points):
 
 if __name__ == '__main__':
     dirname = rospkg.RosPack().get_path('mrpp_sumo')
-    Iot_device_ranges = sorted([300],reverse=True)
+    Iot_device_ranges = sorted([210],reverse=True)
 
-    graph_name = 'iit_bombay'
+    graph_name = 'iit_madras'
     graph_path = dirname +'/graph_ml/'+ graph_name + '.graphml'
     graph = nx.read_graphml(graph_path)
     graph_points = []
@@ -62,16 +61,16 @@ if __name__ == '__main__':
         os.makedirs(graph_all_results_path)
 
     for test in range(25):  
-        no_of_base_stations = 8
+        no_of_base_stations = 20
         rho_max = None
-        for range in Iot_device_ranges:
+        for communication_range in Iot_device_ranges:
             while True: 
                 # print('python3 ' + dirname +'/scripts/algorithms/partition_based_patrolling/graph_partition2.py '+ graph_name + str(no_of_base_stations) +' Base stations')
-                os.system('python3 ' + dirname +'/scripts/algorithms/partition_based_patrolling/graph_partition.py '+ graph_name + ' ' + str(no_of_base_stations))
+                os.system('python3 ' + dirname +'/scripts/algorithms/partition_based_patrolling/graph_partition.py '+ graph_name + ' ' + str(no_of_base_stations)+ ' '+ str(communication_range))
                 graph_results_path = dirname +'/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/' + str(no_of_base_stations) + '_base_stations/'
                 base_stations_df   = pd.read_csv(graph_results_path + graph_name + "_with_"+str(no_of_base_stations) + '_base_stations.csv',converters={'location': pd.eval,'Radius': pd.eval})
                 rho_max = max(base_stations_df['Radius'])
-                if rho_max is not None and rho_max < range:
+                if rho_max is not None and rho_max < communication_range:
                     base_stations_df.to_csv(dirname +'/scripts/algorithms/partition_based_patrolling/graphs_partition_results/'+ graph_name + '/' + str(range) + '_range_base_stations.csv')
                     break
                 no_of_base_stations +=1

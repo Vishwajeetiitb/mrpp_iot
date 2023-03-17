@@ -322,7 +322,6 @@ def get_boundary_hull(points):
     if os.path.exists(hull_path):
         with open(hull_path, "rb") as poly_file:
             hull = pickle.load(poly_file)
-            hull = hull.buffer(100)
     else:    
 
         # hull = ConvexHull(initial_points)
